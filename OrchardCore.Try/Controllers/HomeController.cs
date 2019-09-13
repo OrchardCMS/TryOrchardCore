@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.DataProtection;
@@ -124,9 +123,9 @@ namespace OrchardCore.Try.Controllers
                     var message = new MailMessage();
                     if (emailToBcc)
                     {
-                        message.Bcc.Add(new MailAddress(_smtpSettingsOptions.Value.DefaultSender));
+                        message.Bcc = _smtpSettingsOptions.Value.DefaultSender;
                     }
-                    message.To.Add(model.Email);
+                    message.To = model.Email;
                     message.IsBodyHtml = true;
                     message.Subject = emailSubject;
                     message.Body = S[$"Hello,<br><br>Your demo site '{siteName}' has been created.<br><br>1) Setup your site by opening <a href=\"{confirmationLink}\">this link</a>.<br><br>2) Log into the <a href=\"{siteUrl}/admin\">admin</a> with these credentials:<br>Username: {adminName}<br>Password: {adminPassword}"];
