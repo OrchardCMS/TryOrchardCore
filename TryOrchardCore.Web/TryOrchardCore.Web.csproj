@@ -10,12 +10,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.Xdt.Tools" Version="2.0.0" />
-    <PackageReference Include="OrchardCore.Application.Cms.Targets" Version="1.0.0-beta3-72475" />
-    <PackageReference Include="OrchardCore.Logging.NLog" Version="1.0.0-beta3-72475" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="OrchardCore.Application.Cms.Targets" Version="1.0.0-rc1-10004" />
+    <PackageReference Include="OrchardCore.Logging.NLog" Version="1.0.0-rc1-10004" />
   </ItemGroup>
 
   <ItemGroup>

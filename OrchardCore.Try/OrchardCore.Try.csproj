@@ -7,15 +7,15 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="OrchardCore.Admin.Abstractions" Version="1.0.0-beta3-72475" />
-    <PackageReference Include="OrchardCore.Email.Abstractions" Version="1.0.0-beta3-72475" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-beta3-72475" />
-    <PackageReference Include="OrchardCore.Data.Abstractions" Version="1.0.0-beta3-72475" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-beta3-72475" />
-    <PackageReference Include="OrchardCore.Recipes.Abstractions" Version="1.0.0-beta3-72475" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-beta3-72475" />
-    <PackageReference Include="OrchardCore.Setup.Abstractions" Version="1.0.0-beta3-72475" />
-    <PackageReference Include="OrchardCore.Setup" Version="1.0.0-beta3-72475" />
+    <PackageReference Include="OrchardCore.Admin.Abstractions" Version="1.0.0-rc1-10004" />
+    <PackageReference Include="OrchardCore.Email.Abstractions" Version="1.0.0-rc1-10004" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc1-10004" />
+    <PackageReference Include="OrchardCore.Data.Abstractions" Version="1.0.0-rc1-10004" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc1-10004" />
+    <PackageReference Include="OrchardCore.Recipes.Abstractions" Version="1.0.0-rc1-10004" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc1-10004" />
+    <PackageReference Include="OrchardCore.Setup.Abstractions" Version="1.0.0-rc1-10004" />
+    <PackageReference Include="OrchardCore.Setup" Version="1.0.0-rc1-10004" />
   </ItemGroup>
 
 

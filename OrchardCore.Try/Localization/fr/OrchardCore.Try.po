@@ -1,0 +1,114 @@
+#: OrchardCore.Try\Controllers\HomeController.cs:78
+#. ModelState.AddModelError(nameof(RegisterUserViewModel.AcceptTerms), T["Please, accept the terms and conditions."]);
+msgctxt "OrchardCore.Try.Controllers.HomeController"
+msgid "Please, accept the terms and conditions."
+msgstr "Veuillez accepter les termes et conditions."
+
+#: OrchardCore.Try\Controllers\HomeController.cs:83
+#. ModelState.AddModelError(nameof(RegisterUserViewModel.Handle), T["Invalid tenant name. Must contain characters only and no spaces."]);
+msgctxt "OrchardCore.Try.Controllers.HomeController"
+msgid "Invalid tenant name. Must contain characters only and no spaces."
+msgstr "Nom de site invalide. Ne doit contenir que des caractères et aucun espace."
+
+#: OrchardCore.Try\Controllers\HomeController.cs:90
+#. ModelState.AddModelError(nameof(RegisterUserViewModel.Handle), T["This site name already exists."]);
+msgctxt "OrchardCore.Try.Controllers.HomeController"
+msgid "This site name already exists."
+msgstr "Ce nom de site existe déjà."
+
+#: OrchardCore.Try\Controllers\HomeController.cs:115
+#. ModelState.AddModelError(nameof(RegisterUserViewModel.RecipeName), T["Invalid recipe name."]);
+msgctxt "OrchardCore.Try.Controllers.HomeController"
+msgid "Invalid recipe name."
+msgstr "Nom de recette invalide."
+
+#: OrchardCore.Try\Views\Home\Index.cshtml:13
+#. <h1>@T["Create a site"]</h1>
+msgctxt "OrchardCore.Try.Views.Home.Index"
+msgid "Create a site"
+msgstr "Créer un site"
+
+#: OrchardCore.Try\Views\Home\Index.cshtml:19
+#. <label asp-for="Email">@T["Email"]</label>
+msgctxt "OrchardCore.Try.Views.Home.Index"
+msgid "Email"
+msgstr "Email"
+
+#: OrchardCore.Try\Views\Home\Index.cshtml:20
+#. <small class="text-muted">- @T["Please provide a valid email address to send you a link that will activate the site."]</small>
+msgctxt "OrchardCore.Try.Views.Home.Index"
+msgid "Please provide a valid email address to send you a link that will activate the site."
+msgstr "Veuillez fournir une adresse email valide pour vous envoyer un lien qui activera le site."
+
+#: OrchardCore.Try\Views\Home\Index.cshtml:25
+#. <label asp-for="SiteName">@T["Site Name"]</label>
+msgctxt "OrchardCore.Try.Views.Home.Index"
+msgid "Site Name"
+msgstr "Nom du site"
+
+#: OrchardCore.Try\Views\Home\Index.cshtml:26
+#. <small class="text-muted">- @T["The name of the site that will be created."]</small>
+msgctxt "OrchardCore.Try.Views.Home.Index"
+msgid "The name of the site that will be created."
+msgstr "Le nom du site qui sera créé."
+
+#: OrchardCore.Try\Views\Home\Index.cshtml:31
+#. <label asp-for="RecipeName">@T["Recipe"]</label>
+msgctxt "OrchardCore.Try.Views.Home.Index"
+msgid "Recipe"
+msgstr "Recette"
+
+#: OrchardCore.Try\Views\Home\Index.cshtml:32
+#. <small class="text-muted">- @T["Websites can be preconfigured with custom content and templates. The following examples will give you an idea of what you can build with it."]</small>
+msgctxt "OrchardCore.Try.Views.Home.Index"
+msgid "Websites can be preconfigured with custom content and templates. The following examples will give you an idea of what you can build with it."
+msgstr "Les sites web peuvent être configurés avec du contenu et des modèles. Les exemples suivants vous donneront une idée de ce que vous pouvez construire avec lui."
+
+#: OrchardCore.Try\Views\Home\Index.cshtml:58
+#. <label class="form-check-label" asp-for="AcceptTerms">@T["I agree with the"] <a href="/terms">@T["Terms and Conditions"]</a></label>
+msgctxt "OrchardCore.Try.Views.Home.Index"
+msgid "I agree with the"
+msgstr "Je suis d'accord avec les"
+
+#: OrchardCore.Try\Views\Home\Index.cshtml:58
+#. <label class="form-check-label" asp-for="AcceptTerms">@T["I agree with the"] <a href="/terms">@T["Terms and Conditions"]</a></label>
+msgctxt "OrchardCore.Try.Views.Home.Index"
+msgid "Terms and Conditions"
+msgstr "Termes et Conditions"
+
+#: OrchardCore.Try\Views\Home\Index.cshtml:59
+#. <small class="text-muted">@T["We use the email address to create a demo site. Here is our"] <a href="/privacy">@T["Privacy Policy"]</a>.</small>
+msgctxt "OrchardCore.Try.Views.Home.Index"
+msgid "We use the email address to create a demo site. Here is our"
+msgstr "Nous utilisons l'adresse email pour créer un site de démo. Voir notre"
+
+#: OrchardCore.Try\Views\Home\Index.cshtml:59
+#. <small class="text-muted">@T["We use the email address to create a demo site. Here is our"] <a href="/privacy">@T["Privacy Policy"]</a>.</small>
+msgctxt "OrchardCore.Try.Views.Home.Index"
+msgid "Privacy Policy"
+msgstr "Politique de vie privée"
+
+#: OrchardCore.Try\Views\Home\Index.cshtml:62
+#. <button type="submit" class="btn btn-primary">@T["Submit"]</button>
+msgctxt "OrchardCore.Try.Views.Home.Index"
+msgid "Submit"
+msgstr "Envoyer"
+
+#: OrchardCore.Try\Views\Home\Success.cshtml:2
+#. <h1 class="display-4">@T["Site created successfully."]</h1>
+msgctxt "OrchardCore.Try.Views.Home.Success"
+msgid "Site created successfully."
+msgstr "Site créé avec succès."
+
+#: OrchardCore.Try\Views\Home\Success.cshtml:3
+#. <p class="lead">@T["An email has been sent to the provided address. Please check your inbox (or spam folder) and follow the instructions."]</p>
+msgctxt "OrchardCore.Try.Views.Home.Success"
+msgid "An email has been sent to the provided address. Please check your inbox (or spam folder) and follow the instructions."
+msgstr "Un email a été envoyé à l'adresse indiquée. Veuillez vérifier votre boîte de réception (ou courrier indésirable) et suivre les instructions."
+
+#: OrchardCore.Try\Views\Home\Success.cshtml:5
+#. <p>@T["This email contains a link to setup your site and the credentials to access the admin."]</p>
+msgctxt "OrchardCore.Try.Views.Home.Success"
+msgid "This email contains a link to setup your site and the credentials to access the admin."
+msgstr "Cet emai contient un lien pour activer votre site et les identifiants pour accéder à l'administration."
+

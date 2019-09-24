@@ -187,5 +187,6 @@ nuget.exe
 node_modules/*
 
 TryOrchardCore.Web/wwwroot/is-cache/*
+TryOrchardCore.Web/Localization/*
 !src/Modules/**/wwwroot
 !src/Themes/**/wwwroot
