@@ -100,7 +100,7 @@ namespace OrchardCore.Try.Controllers
                     shellSettings["RecipeName"] = model.RecipeName;
                     shellSettings["DatabaseProvider"] = "Sqlite";
 
-                    _shellSettingsManager.SaveSettings(shellSettings);
+                    await _shellSettingsManager.SaveSettingsAsync(shellSettings);
                     var shellContext = await _shellHost.GetOrCreateShellContextAsync(shellSettings);
 
                     var recipes = await _setupService.GetSetupRecipesAsync();
