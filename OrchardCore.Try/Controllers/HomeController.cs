@@ -10,12 +10,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OrchardCore.Abstractions.Setup;
 using OrchardCore.Email;
 using OrchardCore.Environment.Shell;
 using OrchardCore.Environment.Shell.Models;
 using OrchardCore.Modules;
 using OrchardCore.Setup.Services;
 using OrchardCore.Try.ViewModels;
+using OrchardCore.Users.Services;
 
 namespace OrchardCore.Try.Controllers
 {
@@ -26,6 +28,7 @@ namespace OrchardCore.Try.Controllers
         private const string emailSubject = "Try Orchard Core";
         private const bool emailToBcc = true;
 
+        private readonly IUserService _userService;
         private readonly IShellSettingsManager _shellSettingsManager;
         private readonly IShellHost _shellHost;
         private readonly ISmtpService _smtpService;
@@ -36,6 +39,7 @@ namespace OrchardCore.Try.Controllers
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(
+            IUserService userService,
             IShellSettingsManager shellSettingsManager,
             IShellHost shellHost,
             ISmtpService smtpService,
@@ -46,6 +50,7 @@ namespace OrchardCore.Try.Controllers
             ILogger<HomeController> logger,
             IStringLocalizer<HomeController> stringLocalizer)
         {
+            _userService = userService;
             _shellSettingsManager = shellSettingsManager;
             _shellHost = shellHost;
             _smtpService = smtpService;
@@ -55,10 +60,10 @@ namespace OrchardCore.Try.Controllers
             _dataProtectionProvider = dataProtectionProvider;
             _logger = logger;
 
-            S = stringLocalizer;
+            T = stringLocalizer;
         }
 
-        public IStringLocalizer S { get; set; }
+        public IStringLocalizer T { get; set; }
 
         public IActionResult Index(RegisterUserViewModel model)
         {
@@ -74,22 +79,26 @@ namespace OrchardCore.Try.Controllers
         {
             if (!model.AcceptTerms)
             {
-                ModelState.AddModelError(nameof(RegisterUserViewModel.AcceptTerms), S["Please, accept the terms and conditions."]);
+                ModelState.AddModelError(nameof(RegisterUserViewModel.AcceptTerms), T["Please, accept the terms and conditions."]);
             }
 
             if (!string.IsNullOrEmpty(model.Handle) && !Regex.IsMatch(model.Handle, @"^\w+$"))
             {
-                ModelState.AddModelError(nameof(RegisterUserViewModel.Handle), S["Invalid tenant name. Must contain characters only and no spaces."]);
+                ModelState.AddModelError(nameof(RegisterUserViewModel.Handle), T["Invalid tenant name. Must contain characters only and no spaces."]);
             }
 
             if (ModelState.IsValid)
             {
                 if (_shellHost.TryGetSettings(model.Handle, out var shellSettings))
                 {
-                    ModelState.AddModelError(nameof(RegisterUserViewModel.Handle), S["This site name already exists."]);
+                    ModelState.AddModelError(nameof(RegisterUserViewModel.Handle), T["This site name already exists."]);
                 }
                 else
                 {
+                    var adminName = defaultAdminName;
+                    var adminPassword = GenerateRandomPassword();
+                    var siteName = model.SiteName;
+
                     shellSettings = new ShellSettings
                     {
                         Name = model.Handle,
@@ -97,6 +106,7 @@ namespace OrchardCore.Try.Controllers
                         RequestUrlHost = null,
                         State = TenantState.Uninitialized
                     };
+                    shellSettings["Description"] = $"{model.SiteName} {model.Email}";
                     shellSettings["RecipeName"] = model.RecipeName;
                     shellSettings["DatabaseProvider"] = "Sqlite";
 
@@ -108,12 +118,9 @@ namespace OrchardCore.Try.Controllers
 
                     if (recipe == null)
                     {
-                        ModelState.AddModelError(nameof(RegisterUserViewModel.RecipeName), S["Invalid recipe name."]);
+                        ModelState.AddModelError(nameof(RegisterUserViewModel.RecipeName), T["Invalid recipe name."]);
                     }
 
-                    var adminName = defaultAdminName;
-                    var adminPassword = GenerateRandomPassword();
-                    var siteName = model.SiteName;
                     var siteUrl = GetTenantUrl(shellSettings);
 
                     var dataProtector = _dataProtectionProvider.CreateProtector(dataProtectionPurpose).ToTimeLimitedDataProtector();
@@ -128,7 +135,7 @@ namespace OrchardCore.Try.Controllers
                     message.To = model.Email;
                     message.IsBodyHtml = true;
                     message.Subject = emailSubject;
-                    message.Body = S[$"Hello,<br><br>Your demo site '{siteName}' has been created.<br><br>1) Setup your site by opening <a href=\"{confirmationLink}\">this link</a>.<br><br>2) Log into the <a href=\"{siteUrl}/admin\">admin</a> with these credentials:<br>Username: {adminName}<br>Password: {adminPassword}"];
+                    message.Body = T["Hello,<br><br>Your demo site '{0}' has been created.<br><br>1) Setup your site by opening <a href=\"{1}\">this link</a>.<br><br>2) Log into the <a href=\"{2}/admin\">admin</a> with these credentials:<br>Username: {3}<br>Password: {4}", siteName, confirmationLink, siteUrl, adminName, adminPassword];
 
                     await _smtpService.SendAsync(message);
 
@@ -166,18 +173,17 @@ namespace OrchardCore.Try.Controllers
                 var setupContext = new SetupContext
                 {
                     ShellSettings = shellSettings,
-                    SiteName = siteName,
                     EnabledFeatures = null,
-                    AdminUsername = defaultAdminName,
-                    AdminEmail = email,
-                    AdminPassword = password,
                     Errors = new Dictionary<string, string>(),
-                    Recipe = recipe,
-                    SiteTimeZone = _clock.GetSystemTimeZone().TimeZoneId,
-                    DatabaseProvider = shellSettings["DatabaseProvider"],
-                    //DatabaseConnectionString = shellSettings["ConnectionString"],
-                    //DatabaseTablePrefix = shellSettings["TablePrefix"]
+                    Recipe = recipe
                 };
+
+                setupContext.Properties[SetupConstants.SiteName] = siteName;
+                setupContext.Properties[SetupConstants.AdminUsername] = defaultAdminName;
+                setupContext.Properties[SetupConstants.AdminEmail] = email;
+                setupContext.Properties[SetupConstants.AdminPassword] = password;
+                setupContext.Properties[SetupConstants.SiteTimeZone] = _clock.GetSystemTimeZone().TimeZoneId;
+                setupContext.Properties[SetupConstants.DatabaseProvider] = shellSettings["DatabaseProvider"];
 
                 var executionId = await _setupService.SetupAsync(setupContext);
 
