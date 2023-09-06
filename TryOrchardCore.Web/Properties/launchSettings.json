@@ -12,7 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ORCHARD_APP_DATA": "D:\\home\\site\\Orchard_App_Data\\TryOrchardCore"
+        //"ORCHARD_APP_DATA": "C:\\home\\site\\Orchard_App_Data\\TryOrchardCore"
       }
     },
     "TryOrchardCore.Web": {
