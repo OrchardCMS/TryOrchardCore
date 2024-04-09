@@ -26,7 +26,7 @@ namespace OrchardCore.Try.Controllers
         private const string defaultAdminName = "admin";
         private const string dataProtectionPurpose = "Password";
         private const string emailSubject = "Try Orchard Core";
-        private const bool emailToBcc = true;
+        private const bool emailToBcc = false;
 
         private readonly IUserService _userService;
         private readonly IShellSettingsManager _shellSettingsManager;
