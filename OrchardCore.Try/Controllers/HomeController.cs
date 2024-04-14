@@ -135,7 +135,7 @@ namespace OrchardCore.Try.Controllers
                     message.To = model.Email;
                     message.IsBodyHtml = true;
                     message.Subject = emailSubject;
-                    message.Body = T["Hello,<br><br>Your demo site '{0}' has been created.<br><br>1) Setup your site by opening <a href=\"{1}\">this link</a>.<br><br>2) Log into the <a href=\"{2}/admin\">admin</a> with these credentials:<br>Username: {3}<br>Password: {4}", siteName, confirmationLink, siteUrl, adminName, adminPassword];
+                    message.Body = T["Hello,<br><br>Your demo site '{0}' has been created.<br><br>1) Setup your site by opening <a href=\"{1}\">this link</a>.<br><br>2) Log into the <a href=\"{2}/admin\">admin</a> with these credentials:<br>Username: {3}<br>Password: {4}<br><br>Note: The site will be disabled on Sunday at 10PM CET.", siteName, confirmationLink, siteUrl, adminName, adminPassword];
 
                     await _smtpService.SendAsync(message);
 
