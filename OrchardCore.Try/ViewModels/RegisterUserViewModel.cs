@@ -1,11 +1,10 @@
-namespace OrchardCore.Try.ViewModels
+namespace OrchardCore.Try.ViewModels;
+
+public class RegisterUserViewModel
 {
-    public class RegisterUserViewModel
-    {
-        public string SiteName { get; set; }
-        public string Handle { get; set; }
-        public string Email { get; set; }
-        public string RecipeName { get; set; }
-        public bool AcceptTerms { get; set; }
-    }
+    public string SiteName { get; set; }
+    public string Handle { get; set; }
+    public string Email { get; set; }
+    public string RecipeName { get; set; }
+    public bool AcceptTerms { get; set; }
 }
