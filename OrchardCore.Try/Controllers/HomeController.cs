@@ -241,7 +241,7 @@ public sealed partial class HomeController : Controller
 
         var tenantUrlHost = shellSettings.RequestUrlHost
             ?.Split(separator, StringSplitOptions.RemoveEmptyEntries)
-            ?.First()
+            ?.FirstOrDefault()
             ?? requestHostInfo.Host;
 
         if (requestHostInfo.Port.HasValue)
