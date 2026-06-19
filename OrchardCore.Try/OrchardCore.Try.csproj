@@ -1,24 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="OrchardCore.Admin.Abstractions" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.ContentManagement" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.ContentFields" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.Email.Abstractions" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.DisplayManagement" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.Data.Abstractions" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.Module.Targets" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.Recipes.Abstractions" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.ResourceManagement" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.Setup.Abstractions" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.Setup" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.Users.Abstractions" Version="2.2.1" />
+		<PackageReference Include="OrchardCore.Admin.Abstractions" Version="3.0.0" />
+		<PackageReference Include="OrchardCore.ContentManagement" Version="3.0.0" />
+		<PackageReference Include="OrchardCore.ContentFields" Version="3.0.0" />
+		<PackageReference Include="OrchardCore.Email.Abstractions" Version="3.0.0" />
+		<PackageReference Include="OrchardCore.DisplayManagement" Version="3.0.0" />
+		<PackageReference Include="OrchardCore.Data.Abstractions" Version="3.0.0" />
+		<PackageReference Include="OrchardCore.Module.Targets" Version="3.0.0" />
+		<PackageReference Include="OrchardCore.Recipes.Abstractions" Version="3.0.0" />
+		<PackageReference Include="OrchardCore.ResourceManagement" Version="3.0.0" />
+		<PackageReference Include="OrchardCore.Setup.Abstractions" Version="3.0.0" />
+		<PackageReference Include="OrchardCore.Setup" Version="3.0.0" />
+		<PackageReference Include="OrchardCore.Users.Abstractions" Version="3.0.0" />
 	</ItemGroup>
 
 </Project>
