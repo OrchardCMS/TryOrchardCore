@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="global.json" />
+    <File Path="NuGet.config" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="OrchardCore.Try/OrchardCore.Try.csproj" />
+  <Project Path="TryOrchardCore.Web/TryOrchardCore.Web.csproj" />
+</Solution>
