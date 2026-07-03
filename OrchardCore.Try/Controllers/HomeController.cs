@@ -144,9 +144,8 @@ public sealed partial class HomeController : Controller
                 var message = new MailMessage
                 {
                     To = model.Email,
-                    IsHtmlBody = true,
                     Subject = emailSubject,
-                    Body = T["Hello,<br><br>Your demo site '{0}' has been created.<br><br>1) Setup your site by opening <a href=\"{1}\">this link</a>.<br><br>2) Log into the <a href=\"{2}/admin\">admin</a> with these credentials:<br>Username: {3}<br>Password: {4}<br><br>Note: The site will be disabled on Sunday at 10PM CET.", siteName, confirmationLink, siteUrl, adminName, adminPassword]
+                    HtmlBody = T["Hello,<br><br>Your demo site '{0}' has been created.<br><br>1) Setup your site by opening <a href=\"{1}\">this link</a>.<br><br>2) Log into the <a href=\"{2}/admin\">admin</a> with these credentials:<br>Username: {3}<br>Password: {4}<br><br>Note: The site will be disabled on Sunday at 10PM CET.", siteName, confirmationLink, siteUrl, adminName, adminPassword]
                 };
 
                 if (bool.TryParse(_shellConfiguration["OrchardCore_Try:EmailToBcc"] ?? string.Empty, out var result) && result)
