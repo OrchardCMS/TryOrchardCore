@@ -110,12 +110,12 @@ public class DisableTenantsBackgroundService : BackgroundService
             {
                 _logger.LogInformation("Disabling tenant: {TenantName}", shellSettings.Name);
 
+                // Release the shell context first to ensure the tenant stops
+                await shellHost.ReleaseShellContextAsync(shellSettings);
+
                 // Update the shell settings to set the state to Disabled
                 shellSettings.State = TenantState.Disabled;
                 await shellSettingsManager.SaveSettingsAsync(shellSettings);
-
-                // Release the shell context to stop the tenant
-                await shellHost.ReleaseShellContextAsync(shellSettings);
 
                 _logger.LogInformation("Successfully disabled tenant: {TenantName}", shellSettings.Name);
             }
