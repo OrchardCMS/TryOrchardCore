@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Modules;
+using OrchardCore.Navigation;
 using OrchardCore.Setup;
 using OrchardCore.Try.Services;
 using System;
@@ -14,6 +15,7 @@ public class Startup : StartupBase
     {
         services.AddSetup();
         services.AddHostedService<DisableTenantsBackgroundService>();
+        services.AddNavigationProvider<AdminMenu>();
     }
 
     public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

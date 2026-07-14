@@ -1,0 +1,19 @@
+@model CreateTestTenantsViewModel
+
+<zone Name="Title"><h1>@RenderTitleSegments(T["Create test tenants"])</h1></zone>
+
+<p class="alert alert-info">
+    @T["Creates uninitialized tenants named 00000001, 00000002, ... to test the performance of the Tenants page. Existing names are skipped."]
+</p>
+
+<form asp-action="Index" method="post">
+    <div class="mb-3">
+        <label asp-for="Count" class="form-label">@T["Number of tenants to create"]</label>
+        <input asp-for="Count" class="form-control" type="number" min="1" max="1000" style="max-width: 12rem;" />
+        <span asp-validation-for="Count" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">@T["Create"]</button>
+    </div>
+</form>
