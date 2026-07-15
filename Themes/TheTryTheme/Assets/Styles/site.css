@@ -1,0 +1,315 @@
+@import "tailwindcss"; /* stylelint-disable-line import-notation */
+
+/* Typography plugin (bundled in the standalone CLI): the `prose` classes give the HtmlBodyPart of a
+   Page (terms, privacy, ...) correct paragraph/heading/list rhythm. Without it Preflight strips the
+   default margins and heading sizes and the copy renders as one undifferentiated block. Its colours
+   are re-pointed at the theme tokens further down, so it follows dark mode. */
+@plugin "@tailwindcss/typography"; /* stylelint-disable-line at-rule-no-unknown */
+
+/* Scan templates for the utility classes actually used. Two sources: this theme's views (layout,
+   header/footer, section shapes) and the Try module's views — the signup form itself lives there,
+   in OrchardCore.Try/Views, so its classes must be scanned too or they are stripped from the build. */
+@source "../../Views/**/*.cshtml"; /* stylelint-disable-line at-rule-no-unknown */
+@source "../../../../OrchardCore.Try/Views/**/*.cshtml"; /* stylelint-disable-line at-rule-no-unknown */
+
+/* Dark mode is class-based (a `.dark` class on <html>, set before paint), not the OS preference. */
+@custom-variant dark (&:where(.dark, .dark *)); /* stylelint-disable-line at-rule-no-unknown */
+
+/* ---------------------------------------------------------------------------
+   SELF-HOSTED FONTS
+   Bitter (headings), Inter (body), JetBrains Mono (labels) — variable woff2s served from
+   wwwroot/fonts, so the page makes no request to fonts.googleapis.com / fonts.gstatic.com. One file
+   per family covers every weight. The absolute `/TheTryTheme/…` path is the theme's static mount
+   (not relative, so the CSS build leaves it as-is).
+   --------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Bitter";
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url("/TheTryTheme/fonts/bitter-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Bitter";
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url("/TheTryTheme/fonts/bitter-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/TheTryTheme/fonts/inter-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/TheTryTheme/fonts/inter-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("/TheTryTheme/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("/TheTryTheme/fonts/jetbrains-mono-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---------------------------------------------------------------------------
+   DESIGN TOKENS
+   The single source of truth for the brand, shared with the main orchardcore.net site. These were
+   the inline `tailwind.config` in the mockup; in Tailwind v4 they live here as CSS variables, so
+   `bg-green-600`, `text-ink`, `font-serif`, `max-w-content`, etc. are generated from them.
+   --------------------------------------------------------------------------- */
+@theme {
+  /* Brand green ramp (green-600 = primary accent, green-700 = hover). */
+  --color-green-50:  #ECF6EF;
+  --color-green-100: #D8EEDE;
+  --color-green-200: #AFDCBD;
+  --color-green-300: #7DC598;
+  --color-green-400: #3FA468;
+  --color-green-500: #1C9148;
+  --color-green-600: #15803D;
+  --color-green-700: #11672F;
+  --color-green-800: #0D4F25;
+  --color-green-900: #08361A;
+
+  --color-leaf:                #3FA468; /* bright accent (= green-400) */
+  --color-accent-bright:       #2FBF6B;
+  --color-accent-bright-hover: #54D488;
+
+  --color-cream:      #F5F8F6; /* green-tinted neutral surface */
+  --color-cream-deep: #EDF2EE;
+
+  --color-ink:      #0F1A14; /* body text */
+  --color-ink-soft: #566058; /* secondary text */
+
+  --color-rule: #E2E8E3; /* hairlines / thin bands */
+
+  /* Type families. Bitter (headings), Inter (body), JetBrains Mono (labels). */
+  --font-serif: "Bitter", Georgia, serif;
+  --font-sans:  "Inter", system-ui, sans-serif;
+  --font-mono:  "JetBrains Mono", ui-monospace, monospace;
+
+  /* One standard content width for every band, the header, and the footer. */
+  --max-width-content: 1200px;
+}
+
+/* ---------------------------------------------------------------------------
+   NON-TAILWIND TOKENS
+   Values that bypassed the config in the mockup (shadows, glass, rhythm) plus the full dark
+   palette. In light mode the "live" tokens map to the brand tokens; `html.dark` re-points the same
+   names, so the same utility classes (bg-white, text-ink, border-rule, …) follow the theme.
+   --------------------------------------------------------------------------- */
+:root {
+  /* Sticky-header height; theme.js sets the exact px on menu open so the mobile menu overlay sits
+     directly below the header. This is the fallback before JS runs. */
+  --header-h: 4rem;
+
+  --space-band: clamp(5rem, 10vw, 9rem);
+
+  --header-glass: rgba(255, 255, 255, 0.88);
+  --header-blur: 8px;
+  --shadow-ink: 17, 40, 31; /* rgb channels for the soft UI shadows */
+
+  --shadow-header:       0 1px 0 rgba(var(--shadow-ink), .04), 0 10px 24px -20px rgba(var(--shadow-ink), .22);
+  --shadow-header-stuck: 0 1px 0 rgba(var(--shadow-ink), .05), 0 14px 34px -20px rgba(var(--shadow-ink), .32);
+  --shadow-soft:         0 30px 40px -24px rgba(var(--shadow-ink), .16), 0 8px 18px -10px rgba(var(--shadow-ink), .08);
+
+  --surface:            #ffffff;
+  --surface-cream:      var(--color-cream);
+  --surface-cream-deep: var(--color-cream-deep);
+  --surface-rule:       var(--color-rule);
+  --body-bg:            #ffffff;
+
+  --tint-green-100:       var(--color-green-100);
+  --tint-green-200:       var(--color-green-200);
+  --tint-green-200-hover: var(--color-green-200);
+
+  --text-base:      var(--color-ink);
+  --text-soft:      var(--color-ink-soft);
+  --text-green-900: var(--color-green-900);
+  --text-green-800: var(--color-green-800);
+  --text-green-700: var(--color-green-700);
+  --border-base:    var(--color-rule);
+
+  --header-bg:     var(--header-glass);
+  --header-border: var(--color-rule);
+  --toggle-track:  #E2E8E3;
+  --toggle-border: var(--color-rule);
+  --toggle-knob:   #ffffff;
+  --nav-current:   var(--color-green-600);
+}
+
+/* The dark palette. Only the values change; the variable names (and so every rule that references
+   them) stay the same. */
+html.dark {
+  --body-bg:            #07150D;
+  --surface:            #12291B;
+  --surface-cream:      #0C1E14;
+  --surface-cream-deep: #16331F;
+  --surface-rule:       #08130C;
+
+  --tint-green-100:       #103D23;
+  --tint-green-200:       #0C3119;
+  --tint-green-200-hover: #15512F;
+
+  --text-base:      #E4EFE8;
+  --text-soft:      #9DB2A4;
+  --text-green-900: #ECF7F0;
+  --text-green-800: #CFEAD8;
+  --text-green-700: #86CDA0;
+  --border-base:    #21402E;
+
+  --header-bg:     rgba(7, 21, 13, 0.85);
+  --header-border: #21402E;
+  --toggle-track:  #15512F;
+  --toggle-border: #21402E;
+  --toggle-knob:   #08361A;
+  --nav-current:   #54D488;
+
+  --shadow-header:       0 1px 0 rgba(0,0,0,.4), 0 10px 24px -20px rgba(0,0,0,.6);
+  --shadow-header-stuck: 0 1px 0 rgba(0,0,0,.5), 0 14px 34px -20px rgba(0,0,0,.7);
+
+  color-scheme: dark;
+}
+
+/* ---------------------------------------------------------------------------
+   BASE
+   --------------------------------------------------------------------------- */
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--body-bg);
+    color: var(--text-base);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* `body` prefix raises specificity above Preflight's `h1..h6 { font-weight: inherit }`. */
+  body h1, body h2, body h3, .font-serif {
+    font-family: var(--font-serif);
+    font-weight: 600;
+  }
+  h1, h2, h3 { text-wrap: balance; }
+}
+
+/* ---------------------------------------------------------------------------
+   DARK-MODE SURFACE / TEXT / BORDER REMAPS
+   The markup uses raw utilities (bg-white, bg-cream, text-ink, border-rule). These rules make those
+   utilities follow the dark palette, driven entirely by the `--*` variables above (no literal hex
+   here). Un-layered so they win over Tailwind's utility layer.
+   --------------------------------------------------------------------------- */
+html.dark .bg-white              { background-color: var(--surface); }
+html.dark .bg-cream              { background-color: var(--surface-cream); }
+html.dark .bg-rule               { background-color: var(--surface-rule); }
+html.dark .hover\:bg-cream:hover { background-color: var(--surface-cream-deep); }
+
+html.dark .bg-green-100              { background-color: var(--tint-green-100); }
+html.dark .bg-green-200              { background-color: var(--tint-green-200); }
+html.dark .hover\:bg-green-200:hover { background-color: var(--tint-green-200-hover); }
+
+html.dark .text-ink       { color: var(--text-base); }
+html.dark .text-ink-soft  { color: var(--text-soft); }
+html.dark .text-green-900 { color: var(--text-green-900); }
+html.dark .text-green-800 { color: var(--text-green-800); }
+html.dark .text-green-700 { color: var(--text-green-700); }
+
+html.dark .border-rule { border-color: var(--border-base); }
+
+/* ---------------------------------------------------------------------------
+   RICH TEXT (prose)
+   The body of a Page content item is raw HTML, wrapped in `prose` by
+   Views/Content__Page.cshtml. The plugin's default palette is opinionated, so re-point its colour
+   variables at the theme tokens — those already remap under `html.dark`, so dark mode needs no
+   `prose-invert`. Do NOT set a max-width here: a wrapper `max-w-*` utility is emitted later in the
+   utilities layer and is what controls the measure; setting it here (un-layered) would beat the
+   wrapper and let the copy run full-bleed.
+   --------------------------------------------------------------------------- */
+.prose {
+  --tw-prose-body: var(--text-soft);
+  --tw-prose-headings: var(--text-green-900);
+  --tw-prose-links: var(--text-green-700);
+  --tw-prose-bold: var(--text-base);
+  --tw-prose-counters: var(--text-soft);
+  --tw-prose-bullets: var(--color-green-600);
+  --tw-prose-hr: var(--border-base);
+  --tw-prose-quotes: var(--text-base);
+  --tw-prose-quote-borders: var(--border-base);
+  --tw-prose-code: var(--text-base);
+
+  /* The design's body copy is `leading-relaxed` (1.625); the plugin defaults looser (1.75, and
+     1.778 at prose-lg), which reads wrong next to the rest of the site. */
+  line-height: 1.625;
+}
+
+.prose-sm,
+.prose-lg,
+.prose-xl {
+  line-height: 1.625;
+}
+
+/* ---------------------------------------------------------------------------
+   COMPONENTS
+   --------------------------------------------------------------------------- */
+@layer components {
+  /* Warm vertical rhythm: whitespace, not rules, separates the sections. */
+  .band { padding-block: var(--space-band); }
+
+  /* Smooth in-page anchor scrolling for the header nav (disabled for reduced-motion users — the
+     smooth rule comes first so the media query wins). Anchor jumps clear the sticky header: the
+     negative margin cancels the .band top padding and leaves ~4.5rem above the heading. */
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+  main { scroll-margin-top: 5rem; }
+  section[id] { scroll-margin-top: calc(4.5rem - var(--space-band)); }
+
+  /* Scroll-spy: highlight the header nav link for the section currently in view (theme.js toggles
+     `.is-current` via IntersectionObserver). */
+  .nav-link.is-current { color: var(--nav-current); }
+
+  /* Subtle scroll reveal. Gated behind `html.js` so content is fully visible without JS; theme.js
+     adds `.is-visible` via IntersectionObserver (one-shot). The reduced-motion override comes after
+     so the media query wins. */
+  .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .js .reveal.is-visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* The header carries a soft glass background, a bottom border, and a drop shadow so it stays
+     separated from the page even at the top; the shadow deepens on scroll via .is-stuck. */
+  #siteHeader {
+    background: var(--header-bg);
+    backdrop-filter: blur(var(--header-blur));
+    border-bottom: 1px solid var(--header-border);
+    box-shadow: var(--shadow-header);
+  }
+  #siteHeader.is-stuck { box-shadow: var(--shadow-header-stuck); }
+  html.dark #siteHeader .site-logo { filter: brightness(0) invert(1); }
+
+  /* Soft lift for the form panel. */
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+
+  /* Theme toggle. */
+  #themeToggle { background-color: var(--toggle-track); border-color: var(--toggle-border); }
+  .theme-knob { background: var(--toggle-knob); transform: translateY(-50%); }
+  html.dark .theme-knob { transform: translate(22px, -50%); }
+}

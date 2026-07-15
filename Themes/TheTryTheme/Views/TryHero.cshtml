@@ -1,0 +1,25 @@
+@{
+    // The pitch beside the create-a-site form. Top-aligned and sticky on large screens, so it stays in
+    // view and does not shift when the form grows on step two.
+    var points = new[]
+    {
+        T["Free, and no account needed"],
+        T["Nothing to install, it runs in the cloud"],
+        T["A real admin with sample content to explore"],
+        T["Sites are cleared each week, so experiment freely"],
+    };
+}
+
+<div class="reveal max-w-xl lg:sticky lg:top-24">
+    <h1 class="text-[clamp(2.5rem,5.5vw,4.25rem)] leading-[1.05] tracking-[-0.02em] text-green-900">@T["Try Orchard Core in minutes."]</h1>
+    <p class="mt-6 text-lg leading-relaxed text-pretty text-ink-soft">@T["Create a real Orchard Core site to explore the admin and see what you can build. Nothing to install: pick a starting point, and we email you a link. Your site is ready in about a minute."]</p>
+    <ul class="mt-8 space-y-3 text-ink-soft">
+        @foreach (var point in points)
+        {
+            <li class="flex gap-3">
+                <svg class="mt-0.5 h-5 w-5 shrink-0 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+                <span>@point</span>
+            </li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,14 @@
+<Project>
+
+  <!--
+    Set here (not in the .csproj) on purpose: Lombiq.Tailwind.Targets derives its minify flag inside
+    its NuGet .props, which MSBuild evaluates before the .csproj body — so TailwindMinify has to be set
+    even earlier. Directory.Build.props is imported before the package props, so this takes effect.
+    Result: the Tailwind CLI minifies the compiled wwwroot/css/site.css.
+    (Source stays in Assets/Styles/site.css; the compiled file is a build artifact.)
+  -->
+  <PropertyGroup>
+    <TailwindMinify>true</TailwindMinify>
+  </PropertyGroup>
+
+</Project>

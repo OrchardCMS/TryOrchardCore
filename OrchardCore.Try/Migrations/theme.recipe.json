@@ -1,0 +1,21 @@
+{
+  "name": "TryTheme",
+  "displayName": "Try Orchard Core theme",
+  "description": "Enables TheTryTheme and makes it the site theme.",
+  "author": "The Orchard Team",
+  "website": "https://orchardcore.net",
+  "version": "1.0",
+  "issetuprecipe": false,
+  "categories": [ "theme" ],
+  "tags": [ "theme" ],
+  "steps": [
+    {
+      "name": "feature",
+      "enable": [ "TheTryTheme" ]
+    },
+    {
+      "name": "themes",
+      "site": "TheTryTheme"
+    }
+  ]
+}

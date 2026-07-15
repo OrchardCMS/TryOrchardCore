@@ -30,7 +30,7 @@
         "OrchardCore.Users",
 
         // Themes
-        "TheTheme",
+        "TheTryTheme",
         "TheAdmin",
         "SafeMode"
       ]
@@ -38,7 +38,7 @@
     {
       "name": "themes",
       "admin": "TheAdmin",
-      "site": "TheTheme"
+      "site": "TheTryTheme"
     },
     {
       "name": "settings",

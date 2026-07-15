@@ -1,0 +1,20 @@
+@* Alternate for the Page content type (terms, privacy, disclaimer, ...). Orchard's default
+   Content.cshtml renders the zones into a bare <article>, which under Tailwind's Preflight means the
+   TitlePart <h1> and the raw HtmlBodyPart markup arrive with no margins and no heading sizes. Wrapping
+   the zones in `prose` gives that HTML its rhythm back, using the theme's own tokens (see site.css), so
+   these pages sit inside the site design without anyone having to touch the content.
+
+   The zones are rendered rather than the parts individually, so whatever a Page carries now or later
+   (title, body, anything added in the admin) is picked up. `max-w-3xl` on the same element overrides
+   prose's default 65ch measure. *@
+<article class="bg-white">
+    @* Not `band` (the marketing sections' clamp(5rem,10vw,9rem) rhythm) — that leaves a ~144px hole
+       above the title on a document page. *@
+    <div class="mx-auto max-w-content px-1 pt-12 pb-20">
+        <div class="prose prose-lg mx-auto max-w-3xl">
+            @await DisplayAsync(Model.Header)
+            @await DisplayAsync(Model.Content)
+            @await DisplayAsync(Model.Footer)
+        </div>
+    </div>
+</article>

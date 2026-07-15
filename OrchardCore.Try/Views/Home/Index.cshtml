@@ -1,64 +1,162 @@
 @model RegisterUserViewModel
-<style>
-    .hidden {
-        display: none;
-    }
+@{
+    // The starting points offered on step two. Value must match a setup recipe name resolved by
+    // ISetupService.GetSetupRecipesAsync() — the controller rejects anything else.
+    var recipes = new[]
+    {
+        (Value: "Agency", Name: T["Agency"], Description: T["Pages, services, and a blog. A good all-round start."], Image: "~/OrchardCore.Try/themes/agency.jpg"),
+        (Value: "Blog", Name: T["Blog"], Description: T["Posts, categories, and an author profile."], Image: "~/OrchardCore.Try/themes/blog.jpg"),
+        (Value: "ComingSoon", Name: T["Coming soon"], Description: T["A single landing page. The simplest option."], Image: "~/OrchardCore.Try/themes/comingsoon.jpg"),
+    };
 
-    input[type=radio]:checked + label > img {
-        border: 1px solid #fff;
-        box-shadow: 0 0 3px 3px #090;
-    }
-</style>
-<h1>Create a demo site</h1>
+    var selectedRecipe = string.IsNullOrEmpty(Model.RecipeName) ? "Agency" : Model.RecipeName;
 
-<form asp-action="Index" method="post">
-    <input asp-for="Handle" type="hidden" />
-    <div class="mb-3">
-        <label asp-for="Email">@T["Email"]</label>
-        <small class="text-muted">- Please provide a valid email address to send you a link that will activate the site.</small>
-        <input class="form-control" asp-for="Email" type="email" required />
-    </div>
+    // On a validation failure the controller re-renders this page. Open on the step the error is on,
+    // otherwise the user lands on step one and never sees what went wrong. Handle is hidden, but its
+    // errors (invalid or duplicate tenant name) surface on step two, next to the submit button.
+    string[] stepTwoFields = [nameof(Model.RecipeName), nameof(Model.AcceptTerms), nameof(Model.Handle)];
+    var initialStep = stepTwoFields.Any(field => ViewData.ModelState[field]?.Errors.Count > 0) ? 2 : 1;
 
-    <div class="mb-3">
-        <label asp-for="SiteName">@T["Site Name"]</label>
-        <small class="text-muted">- The name of the site that will be created.</small>
-        <input class="form-control" asp-for="SiteName" required />
-    </div>
+    const string fieldClass = "mt-2 w-full rounded-md border border-rule bg-white px-3.5 py-2.5 text-ink outline-none transition placeholder:text-ink-soft/60 focus:border-green-600 focus:ring-2 focus:ring-green-600/30";
+    const string errorClass = "mt-1.5 block text-xs font-medium text-red-600";
 
-    <div class="mb-3">
-        <label asp-for="RecipeName">@T["Recipe"]</label>
-        <small class="text-muted">- Orchard Core websites can be preconfigured with custom content and templates. The following examples will give you an idea of what you can build with it.</small>
-        <div class="row">
-            <div class="col-md-4 box">
-                <input id="agency" type="radio" name="RecipeName" value="Agency" class="hidden" autocomplete="off" checked>
-                <label class="btn btn-light" for="agency">
-                    <img src="/OrchardCore.Try/themes/agency.jpg" title="Agency" class="img-thumbnail img-check">
-                </label>
+    // --- SEO for the homepage. The layout's RenderTitleSegments prepends the site name, so the document
+    // title becomes "<SiteName> - Create a free demo site" (~45 chars, descriptive, brand included). The
+    // meta/link tag helpers below register into <head> via <resources type="Meta"/> and "HeadLink".
+    Title.AddSegment(T["Create a free demo site"], "0");
+
+    var pageTitle = T.GetString("Create a free demo site").Value;
+    var socialTitle = $"{Site.SiteName} - {pageTitle}";
+    var metaDescription = T.GetString("Spin up a free Orchard Core demo site in your browser. Nothing to install: pick a starting point and we email you a link to a real admin to explore.").Value;
+
+    var baseUrl = $"{Context.Request.Scheme}://{Context.Request.Host}";
+    var canonicalUrl = baseUrl + Url.Content("~/");
+}
+
+@* SEO / social share meta for the homepage only. Rendered into <head> by the layout (the tag helpers
+   register with the resource manager and emit nothing inline). No og:image/twitter:image yet — add a
+   dedicated 1200x630 social card when one exists (twitter:card can become summary_large_image then). *@
+<meta asp-name="description" content="@metaDescription" />
+<link rel="canonical" asp-src="@canonicalUrl" />
+<meta asp-property="og:type" content="website" />
+<meta asp-property="og:site_name" content="@Site.SiteName" />
+<meta asp-property="og:title" content="@socialTitle" />
+<meta asp-property="og:description" content="@metaDescription" />
+<meta asp-property="og:url" content="@canonicalUrl" />
+<meta asp-name="twitter:card" content="summary" />
+<meta asp-name="twitter:title" content="@socialTitle" />
+<meta asp-name="twitter:description" content="@metaDescription" />
+
+<section id="create" class="bg-white">
+    <div class="mx-auto max-w-content px-6 py-12 sm:py-16">
+        <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+
+            <div>
+                @await DisplayAsync(await New.TryHero())
             </div>
-            <div class="col-md-4 box">
-                <input id="blog" type="radio" name="RecipeName" value="Blog" class="hidden" autocomplete="off">
-                <label class="btn btn-light" for="blog">
-                    <img src="/OrchardCore.Try/themes/blog.jpg" title="Blog" class="img-thumbnail img-check">
-                </label>
+
+            @* Both steps render visible; theme.js hides the one you are not on. Without JS the whole
+               form is still there and posts in one go (falling back to a redirect to the Success page).
+               With JS, theme.js posts with fetch and swaps the form for [data-create-success] in this same
+               card. *@
+            <div class="reveal">
+                <div class="rounded-2xl bg-cream p-6 shadow-soft sm:p-8">
+                <form asp-action="Index" method="post" aria-label="@T["Create a demo site"]" data-create-form data-initial-step="@initialStep" data-error-text="@T["Something went wrong. Please try again."]">
+                    <div class="flex items-center justify-between gap-4">
+                        <h2 class="text-2xl text-green-900">@T["Create your site"]</h2>
+                        @* theme.js re-labels this as you move between steps, so it needs the localized
+                           template, not just the current text. Passing "{0}" as the argument leaves the
+                           placeholder in place for JS to substitute (T always runs a format pass). *@
+                        <span data-step-label="@T["Step {0} of 2", "{0}"]" class="shrink-0 text-xs font-medium text-ink-soft">@T["Step {0} of 2", initialStep]</span>
+                    </div>
+                    <div class="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-rule">
+                        <div data-step-bar style="width: @(initialStep == 2 ? "100%" : "50%")" class="h-full rounded-full bg-green-600 transition-all duration-300"></div>
+                    </div>
+
+                    <input asp-for="Handle" type="hidden" />
+
+                    @* Step 1: name the site and add an email. *@
+                    <div data-step="1" tabindex="-1" class="mt-6 space-y-5 outline-none">
+                        <div>
+                            <label asp-for="SiteName" class="block text-sm font-medium text-green-900">@T["Site name"]</label>
+                            <input asp-for="SiteName" type="text" required placeholder="@T["My Orchard Core site"]" class="@fieldClass" />
+                            <p class="mt-1.5 text-xs text-ink-soft">@T["What your demo site is called. You can change it later."]</p>
+                            <span asp-validation-for="SiteName" class="@errorClass"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Email" class="block text-sm font-medium text-green-900">@T["Email"]</label>
+                            <input asp-for="Email" type="email" required autocomplete="email" placeholder="you@example.com" class="@fieldClass" />
+                            @* The privacy promise the core maintainer asked us to emphasise, right where a
+                               hesitant user is about to type. Bold (not a coloured box, which reads as a
+                               validation state) so it stands out from the plain hints without alarming. *@
+                            <p class="mt-1.5 text-xs font-semibold text-ink-soft">@T["We only use your email to send you the link to your site. We never store or sell it."]</p>
+                            <span asp-validation-for="Email" class="@errorClass"></span>
+                        </div>
+                        <button type="button" data-next class="inline-flex w-full items-center justify-center rounded-md bg-green-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700">@T["Continue"]</button>
+                    </div>
+
+                    @* Step 2: choose a starting point, agree, and create. *@
+                    <div data-step="2" tabindex="-1" class="mt-6 space-y-5 outline-none">
+                        <fieldset>
+                            <legend class="text-sm font-medium text-green-900">@T["Starting point"]</legend>
+                            <p class="mt-1 text-xs text-ink-soft">@T["Each one preconfigures the site with sample content and templates."]</p>
+                            <div class="mt-3 grid gap-3">
+                                @foreach (var recipe in recipes)
+                                {
+                                    <label class="block cursor-pointer">
+                                        @* Plain name/value rather than asp-for, so the three radios share one group and
+                                           we control which is checked on redisplay. The controller binds by name. *@
+                                        <input type="radio" name="RecipeName" value="@recipe.Value" autocomplete="off" checked="@(selectedRecipe == recipe.Value)" class="peer sr-only">
+                                        <div class="flex items-center gap-3.5 rounded-lg border-2 border-rule p-2.5 transition hover:border-green-300 peer-checked:border-green-600 peer-checked:bg-green-100 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-green-700">
+                                            <img src="@Url.Content(recipe.Image)" alt="" width="112" height="70" loading="lazy" class="aspect-[16/10] w-28 shrink-0 rounded-md object-cover object-top ring-1 ring-rule">
+                                            <div class="min-w-0">
+                                                <span class="block font-semibold text-green-900">@recipe.Name</span>
+                                                <span class="mt-0.5 block text-sm text-ink-soft">@recipe.Description</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                }
+                            </div>
+                            <span asp-validation-for="RecipeName" class="@errorClass"></span>
+                        </fieldset>
+
+                        <div>
+                            <label class="flex items-start gap-3 text-sm text-ink-soft">
+                                <input asp-for="AcceptTerms" type="checkbox" required class="mt-0.5 h-4 w-4 shrink-0 accent-green-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700" />
+                                <span>@T["I agree to the"] <a href="@Url.Content("~/terms")" class="font-semibold text-green-700 underline decoration-green-700/30 underline-offset-2 hover:decoration-green-700">@T["Terms"]</a> @T["and"] <a href="@Url.Content("~/privacy")" class="font-semibold text-green-700 underline decoration-green-700/30 underline-offset-2 hover:decoration-green-700">@T["Privacy policy"]</a>.</span>
+                            </label>
+                            <span asp-validation-for="AcceptTerms" class="@errorClass"></span>
+                        </div>
+
+                        @* Handle is generated server-side, so an error on it is not something the user typed
+                           into a field. Surface it here rather than losing it. *@
+                        <span asp-validation-for="Handle" class="block text-xs font-medium text-red-600"></span>
+
+                        @* Network / unexpected errors from the fetch post that do not belong to a field. *@
+                        <p data-create-error hidden class="text-sm font-medium text-red-600"></p>
+
+                        <div class="flex gap-3">
+                            <button type="button" data-back class="inline-flex items-center justify-center rounded-md bg-green-100 px-5 py-3 text-sm font-semibold text-green-800 transition hover:bg-green-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700">@T["Back"]</button>
+                            <button type="submit" data-loading="@T["Creating your site…"]" class="inline-flex flex-1 items-center justify-center rounded-md bg-green-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700 disabled:cursor-not-allowed disabled:opacity-70">@T["Create my site"]</button>
+                        </div>
+                    </div>
+                </form>
+
+                @* Shown by theme.js in place of the form once the site is created. Mirrors the standalone
+                   Success page, sized to sit in the card. *@
+                <div data-create-success hidden class="py-6 text-center">
+                    <div class="mx-auto grid h-14 w-14 place-items-center rounded-full bg-green-100">
+                        <svg class="h-7 w-7 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+                    </div>
+                    <h2 class="mt-5 text-2xl text-green-900">@T["Your site is on its way."]</h2>
+                    <p class="mx-auto mt-3 max-w-sm text-ink-soft">@T["Check your inbox. We've emailed you a link to set your site up, and you'll be exploring the admin in about a minute."]</p>
+                </div>
+                </div>
             </div>
-            <div class="col-md-4 box">
-                <input id="comingsoon" type="radio" name="RecipeName" value="ComingSoon" class="hidden" autocomplete="off">
-                <label class="btn btn-light" for="comingsoon">
-                    <img src="/OrchardCore.Try/themes/comingsoon.jpg" title="Coming soon" class="img-thumbnail img-check">
-                </label>
-            </div>
-            <div class="clearfix"></div>
+
         </div>
     </div>
+</section>
 
-    <div class="mb-3 form-check">
-        <input type="checkbox" class=" form-check-input" asp-for="AcceptTerms" required />
-        <label class="form-check-label" asp-for="AcceptTerms">@T["I agree with the"] <a href="/terms">@T["Terms and Conditions"]</a></label>
-        <small class="text-muted">We use the email address to create a demo site. Here is our <a href="/privacy">Privacy Policy</a>.</small>
-    </div>
-    <div class="mb-3">
-        <button type="submit" class="btn btn-primary">@T["Submit"]</button>
-    </div>
-
-    @Html.ValidationSummary(false, "", new { @class = "alert-danger" })
-</form>
+@await DisplayAsync(await New.HowItWorks())
+@await DisplayAsync(await New.Faqs())

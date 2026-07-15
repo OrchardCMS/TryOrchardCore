@@ -1,6 +1,16 @@
-<div class="jumbotron">
-  <h1 class="display-4">@T["Site created successfully."]</h1>
-  <p class="lead">@T["An email has been sent to the provided address. Please check your inbox (or spam folder) and follow the instructions."]</p>
-  <hr class="my-4">
-  <p>@T["This email contains a link to setup your site and the credentials to access the admin."]</p>
-</div>
+@* Open centred band, matching the hero — in this design only the create-a-site form is a floating
+   card, so a card here would read as the odd one out. `flex-1` lets the section grow to fill <main>
+   (which the layout stretches to the viewport), so the content sits centred with the footer at the
+   bottom on a short page. The h1 uses the hero's exact clamp so both titles are the same size. *@
+<section class="flex flex-1 items-center justify-center bg-white">
+    <div class="mx-auto max-w-content px-6 py-20 text-center sm:py-28">
+        @* Positive "it worked" feedback: a check in a soft round badge, using the same glyph as the
+           hero's bullet list so it reads as part of the design. *@
+        <span class="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+            <svg class="h-10 w-10 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+        </span>
+        <h1 class="mt-6 text-[clamp(2.5rem,5.5vw,4.25rem)] leading-[1.05] tracking-[-0.02em] text-green-900">@T["Your site is on its way."]</h1>
+        <p class="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-pretty text-ink-soft">@T["Check your inbox. We've emailed you a link to set your site up, and you'll be exploring the admin in about a minute."]</p>
+        <p class="mx-auto mt-4 max-w-xl text-ink-soft">@T["The email also has your admin credentials. If it has not arrived, check your spam folder."]</p>
+    </div>
+</section>
