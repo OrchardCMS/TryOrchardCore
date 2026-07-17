@@ -3,7 +3,7 @@
 /* Typography plugin (bundled in the standalone CLI): the `prose` classes give the HtmlBodyPart of a
    Page (terms, privacy, ...) correct paragraph/heading/list rhythm. Without it Preflight strips the
    default margins and heading sizes and the copy renders as one undifferentiated block. Its colours
-   are re-pointed at the theme tokens further down, so it follows dark mode. */
+   are re-pointed at the brand with prose-* modifiers in Views/Content-Page.cshtml. */
 @plugin "@tailwindcss/typography"; /* stylelint-disable-line at-rule-no-unknown */
 
 /* Scan templates for the utility classes actually used. Two sources: this theme's views (layout,
@@ -76,6 +76,11 @@
    The single source of truth for the brand, shared with the main orchardcore.net site. These were
    the inline `tailwind.config` in the mockup; in Tailwind v4 they live here as CSS variables, so
    `bg-green-600`, `text-ink`, `font-serif`, `max-w-content`, etc. are generated from them.
+
+   Dark mode is utility-first: every colour that changes with the theme has a night-* partner here,
+   and markup opts in per use with the `dark:` variant (`bg-cream dark:bg-night-cream`). Colours
+   without a night-* partner (the green ramp, leaf, white text on green) are the brand itself and
+   deliberately render the same in both modes.
    --------------------------------------------------------------------------- */
 @theme {
   /* Brand green ramp (green-600 = primary accent, green-700 = hover). */
@@ -102,6 +107,29 @@
 
   --color-rule: #E2E8E3; /* hairlines / thin bands */
 
+  /* The dark palette. Each token names the light utility it partners in markup, so a class list
+     always reads light-then-dark (`text-green-900 dark:text-night-heading`). */
+  --color-night:              #07150D; /* deepest page green (the header glass) */
+  --color-night-surface:      #12291B; /* page bands and panels    (pairs with bg-white) */
+  --color-night-cream:        #0C1E14; /* tinted band              (pairs with bg-cream) */
+  --color-night-track:        #08130C; /* solid thin bands         (pairs with bg-rule) */
+  --color-night-tint:         #103D23; /* selected / callout wash  (pairs with bg-green-100) */
+  --color-night-tint-strong:  #15512F; /* same, one step up        (pairs with hover:bg-green-200) */
+  --color-night-rule:         #21402E; /* hairlines                (pairs with border-rule / ring-rule) */
+  --color-night-ink:          #E4EFE8; /* body text                (pairs with text-ink) */
+  --color-night-ink-soft:     #9DB2A4; /* secondary text           (pairs with text-ink-soft) */
+  --color-night-heading:      #ECF7F0; /* headings                 (pairs with text-green-900) */
+  --color-night-heading-soft: #CFEAD8; /*                          (pairs with text-green-800) */
+  --color-night-link:         #86CDA0; /* links                    (pairs with text-green-700) */
+
+  /* Soft UI shadows (rgb 17 40 31 = ink-tinted, so they read green-grey rather than dead grey).
+     The header pair has heavier dark twins: an ink shadow disappears on a near-black page. */
+  --shadow-soft:              0 30px 40px -24px rgba(17, 40, 31, .16), 0 8px 18px -10px rgba(17, 40, 31, .08);
+  --shadow-header:            0 1px 0 rgba(17, 40, 31, .04), 0 10px 24px -20px rgba(17, 40, 31, .22);
+  --shadow-header-stuck:      0 1px 0 rgba(17, 40, 31, .05), 0 14px 34px -20px rgba(17, 40, 31, .32);
+  --shadow-header-dark:       0 1px 0 rgba(0, 0, 0, .4), 0 10px 24px -20px rgba(0, 0, 0, .6);
+  --shadow-header-stuck-dark: 0 1px 0 rgba(0, 0, 0, .5), 0 14px 34px -20px rgba(0, 0, 0, .7);
+
   /* Type families. Bitter (headings), Inter (body), JetBrains Mono (labels). */
   --font-serif: "Bitter", Georgia, serif;
   --font-sans:  "Inter", system-ui, sans-serif;
@@ -112,95 +140,23 @@
 }
 
 /* ---------------------------------------------------------------------------
-   NON-TAILWIND TOKENS
-   Values that bypassed the config in the mockup (shadows, glass, rhythm) plus the full dark
-   palette. In light mode the "live" tokens map to the brand tokens; `html.dark` re-points the same
-   names, so the same utility classes (bg-white, text-ink, border-rule, …) follow the theme.
+   LAYOUT VARIABLES
+   The two rhythm values JS and the components share. Everything colour lives in @theme above and is
+   applied from markup as utilities (with dark: twins), so nothing here changes with the theme.
    --------------------------------------------------------------------------- */
 :root {
   /* Sticky-header height; theme.js sets the exact px on menu open so the mobile menu overlay sits
      directly below the header. This is the fallback before JS runs. */
   --header-h: 4rem;
 
+  /* Warm vertical rhythm, shared by .band and the section scroll offsets below. */
   --space-band: clamp(5rem, 10vw, 9rem);
-
-  --header-glass: rgba(255, 255, 255, 0.88);
-  --header-blur: 8px;
-  --shadow-ink: 17, 40, 31; /* rgb channels for the soft UI shadows */
-
-  --shadow-header:       0 1px 0 rgba(var(--shadow-ink), .04), 0 10px 24px -20px rgba(var(--shadow-ink), .22);
-  --shadow-header-stuck: 0 1px 0 rgba(var(--shadow-ink), .05), 0 14px 34px -20px rgba(var(--shadow-ink), .32);
-  --shadow-soft:         0 30px 40px -24px rgba(var(--shadow-ink), .16), 0 8px 18px -10px rgba(var(--shadow-ink), .08);
-
-  --surface:            #ffffff;
-  --surface-cream:      var(--color-cream);
-  --surface-cream-deep: var(--color-cream-deep);
-  --surface-rule:       var(--color-rule);
-  --body-bg:            #ffffff;
-
-  --tint-green-100:       var(--color-green-100);
-  --tint-green-200:       var(--color-green-200);
-  --tint-green-200-hover: var(--color-green-200);
-
-  --text-base:      var(--color-ink);
-  --text-soft:      var(--color-ink-soft);
-  --text-green-900: var(--color-green-900);
-  --text-green-800: var(--color-green-800);
-  --text-green-700: var(--color-green-700);
-  --border-base:    var(--color-rule);
-
-  --header-bg:     var(--header-glass);
-  --header-border: var(--color-rule);
-  --toggle-track:  #E2E8E3;
-  --toggle-border: var(--color-rule);
-  --toggle-knob:   #ffffff;
-  --nav-current:   var(--color-green-600);
-}
-
-/* The dark palette. Only the values change; the variable names (and so every rule that references
-   them) stay the same. */
-html.dark {
-  --body-bg:            #07150D;
-  --surface:            #12291B;
-  --surface-cream:      #0C1E14;
-  --surface-cream-deep: #16331F;
-  --surface-rule:       #08130C;
-
-  --tint-green-100:       #103D23;
-  --tint-green-200:       #0C3119;
-  --tint-green-200-hover: #15512F;
-
-  --text-base:      #E4EFE8;
-  --text-soft:      #9DB2A4;
-  --text-green-900: #ECF7F0;
-  --text-green-800: #CFEAD8;
-  --text-green-700: #86CDA0;
-  --border-base:    #21402E;
-
-  --header-bg:     rgba(7, 21, 13, 0.85);
-  --header-border: #21402E;
-  --toggle-track:  #15512F;
-  --toggle-border: #21402E;
-  --toggle-knob:   #08361A;
-  --nav-current:   #54D488;
-
-  --shadow-header:       0 1px 0 rgba(0,0,0,.4), 0 10px 24px -20px rgba(0,0,0,.6);
-  --shadow-header-stuck: 0 1px 0 rgba(0,0,0,.5), 0 14px 34px -20px rgba(0,0,0,.7);
-
-  color-scheme: dark;
 }
 
 /* ---------------------------------------------------------------------------
    BASE
    --------------------------------------------------------------------------- */
 @layer base {
-  body {
-    font-family: var(--font-sans);
-    background-color: var(--body-bg);
-    color: var(--text-base);
-    -webkit-font-smoothing: antialiased;
-  }
-
   /* `body` prefix raises specificity above Preflight's `h1..h6 { font-weight: inherit }`. */
   body h1, body h2, body h3, .font-serif {
     font-family: var(--font-serif);
@@ -210,62 +166,10 @@ html.dark {
 }
 
 /* ---------------------------------------------------------------------------
-   DARK-MODE SURFACE / TEXT / BORDER REMAPS
-   The markup uses raw utilities (bg-white, bg-cream, text-ink, border-rule). These rules make those
-   utilities follow the dark palette, driven entirely by the `--*` variables above (no literal hex
-   here). Un-layered so they win over Tailwind's utility layer.
-   --------------------------------------------------------------------------- */
-html.dark .bg-white              { background-color: var(--surface); }
-html.dark .bg-cream              { background-color: var(--surface-cream); }
-html.dark .bg-rule               { background-color: var(--surface-rule); }
-html.dark .hover\:bg-cream:hover { background-color: var(--surface-cream-deep); }
-
-html.dark .bg-green-100              { background-color: var(--tint-green-100); }
-html.dark .bg-green-200              { background-color: var(--tint-green-200); }
-html.dark .hover\:bg-green-200:hover { background-color: var(--tint-green-200-hover); }
-
-html.dark .text-ink       { color: var(--text-base); }
-html.dark .text-ink-soft  { color: var(--text-soft); }
-html.dark .text-green-900 { color: var(--text-green-900); }
-html.dark .text-green-800 { color: var(--text-green-800); }
-html.dark .text-green-700 { color: var(--text-green-700); }
-
-html.dark .border-rule { border-color: var(--border-base); }
-
-/* ---------------------------------------------------------------------------
-   RICH TEXT (prose)
-   The body of a Page content item is raw HTML, wrapped in `prose` by
-   Views/Content__Page.cshtml. The plugin's default palette is opinionated, so re-point its colour
-   variables at the theme tokens — those already remap under `html.dark`, so dark mode needs no
-   `prose-invert`. Do NOT set a max-width here: a wrapper `max-w-*` utility is emitted later in the
-   utilities layer and is what controls the measure; setting it here (un-layered) would beat the
-   wrapper and let the copy run full-bleed.
-   --------------------------------------------------------------------------- */
-.prose {
-  --tw-prose-body: var(--text-soft);
-  --tw-prose-headings: var(--text-green-900);
-  --tw-prose-links: var(--text-green-700);
-  --tw-prose-bold: var(--text-base);
-  --tw-prose-counters: var(--text-soft);
-  --tw-prose-bullets: var(--color-green-600);
-  --tw-prose-hr: var(--border-base);
-  --tw-prose-quotes: var(--text-base);
-  --tw-prose-quote-borders: var(--border-base);
-  --tw-prose-code: var(--text-base);
-
-  /* The design's body copy is `leading-relaxed` (1.625); the plugin defaults looser (1.75, and
-     1.778 at prose-lg), which reads wrong next to the rest of the site. */
-  line-height: 1.625;
-}
-
-.prose-sm,
-.prose-lg,
-.prose-xl {
-  line-height: 1.625;
-}
-
-/* ---------------------------------------------------------------------------
    COMPONENTS
+   Only what a utility class cannot express: element rules with no markup hook (html, main), and
+   JS-driven state that needs html-level gating. Everything else — header glass, theme toggle,
+   scroll-spy highlight — is utilities in the markup.
    --------------------------------------------------------------------------- */
 @layer components {
   /* Warm vertical rhythm: whitespace, not rules, separates the sections. */
@@ -281,10 +185,6 @@ html.dark .border-rule { border-color: var(--border-base); }
   main { scroll-margin-top: 5rem; }
   section[id] { scroll-margin-top: calc(4.5rem - var(--space-band)); }
 
-  /* Scroll-spy: highlight the header nav link for the section currently in view (theme.js toggles
-     `.is-current` via IntersectionObserver). */
-  .nav-link.is-current { color: var(--nav-current); }
-
   /* Subtle scroll reveal. Gated behind `html.js` so content is fully visible without JS; theme.js
      adds `.is-visible` via IntersectionObserver (one-shot). The reduced-motion override comes after
      so the media query wins. */
@@ -293,23 +193,4 @@ html.dark .border-rule { border-color: var(--border-base); }
   @media (prefers-reduced-motion: reduce) {
     .js .reveal { opacity: 1; transform: none; transition: none; }
   }
-
-  /* The header carries a soft glass background, a bottom border, and a drop shadow so it stays
-     separated from the page even at the top; the shadow deepens on scroll via .is-stuck. */
-  #siteHeader {
-    background: var(--header-bg);
-    backdrop-filter: blur(var(--header-blur));
-    border-bottom: 1px solid var(--header-border);
-    box-shadow: var(--shadow-header);
-  }
-  #siteHeader.is-stuck { box-shadow: var(--shadow-header-stuck); }
-  html.dark #siteHeader .site-logo { filter: brightness(0) invert(1); }
-
-  /* Soft lift for the form panel. */
-  .shadow-soft { box-shadow: var(--shadow-soft); }
-
-  /* Theme toggle. */
-  #themeToggle { background-color: var(--toggle-track); border-color: var(--toggle-border); }
-  .theme-knob { background: var(--toggle-knob); transform: translateY(-50%); }
-  html.dark .theme-knob { transform: translate(22px, -50%); }
 }

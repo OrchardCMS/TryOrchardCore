@@ -7,11 +7,16 @@
    The zones are rendered rather than the parts individually, so whatever a Page carries now or later
    (title, body, anything added in the admin) is picked up. `max-w-3xl` on the same element overrides
    prose's default 65ch measure. *@
-<article class="bg-white">
+<article class="bg-white dark:bg-night-surface">
     @* Not `band` (the marketing sections' clamp(5rem,10vw,9rem) rhythm) — that leaves a ~144px hole
        above the title on a document page. *@
     <div class="mx-auto max-w-content px-1 pt-12 pb-20">
-        <div class="prose prose-lg mx-auto max-w-3xl">
+        @* The typography plugin's palette is opinionated, so its colour knobs (--tw-prose-*) are
+           re-pointed at the brand here, with dark: twins. leading-relaxed pulls prose-lg's 1.778
+           line-height back to the 1.625 the rest of the site uses. *@
+        <div class="prose prose-lg mx-auto max-w-3xl leading-relaxed
+                    [--tw-prose-body:var(--color-ink-soft)] [--tw-prose-headings:var(--color-green-900)] [--tw-prose-links:var(--color-green-700)] [--tw-prose-bold:var(--color-ink)] [--tw-prose-counters:var(--color-ink-soft)] [--tw-prose-bullets:var(--color-green-600)] [--tw-prose-hr:var(--color-rule)] [--tw-prose-quotes:var(--color-ink)] [--tw-prose-quote-borders:var(--color-rule)] [--tw-prose-code:var(--color-ink)]
+                    dark:[--tw-prose-body:var(--color-night-ink-soft)] dark:[--tw-prose-headings:var(--color-night-heading)] dark:[--tw-prose-links:var(--color-night-link)] dark:[--tw-prose-bold:var(--color-night-ink)] dark:[--tw-prose-counters:var(--color-night-ink-soft)] dark:[--tw-prose-hr:var(--color-night-rule)] dark:[--tw-prose-quotes:var(--color-night-ink)] dark:[--tw-prose-quote-borders:var(--color-night-rule)] dark:[--tw-prose-code:var(--color-night-ink)]">
             @await DisplayAsync(Model.Header)
             @await DisplayAsync(Model.Content)
             @await DisplayAsync(Model.Footer)
