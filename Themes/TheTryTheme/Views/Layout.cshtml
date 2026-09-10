@@ -1,0 +1,74 @@
+@using Microsoft.AspNetCore.Html
+<!DOCTYPE html>
+<html lang="@Orchard.CultureName()">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@RenderTitleSegments(Site.SiteName, "before", new HtmlString(" - "))</title>
+
+    <resources type="Meta" />
+
+    <link rel="icon" type="image/webp" href="@Url.Content("~/TheTryTheme/assets/orchard-core-symbol-logo-color.webp")">
+    <link rel="apple-touch-icon" href="@Url.Content("~/TheTryTheme/assets/orchard-core-symbol-logo-color.webp")">
+
+    @* Self-hosted fonts — the @@font-face rules live in the compiled site.css; no request to
+       fonts.googleapis.com. Preload the two above-the-fold latin files (Inter body, Bitter headings)
+       so they fetch alongside the CSS; latin-ext + JetBrains Mono load on demand. *@
+    <link rel="preload" href="@Url.Content("~/TheTryTheme/fonts/inter-latin.woff2")" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="@Url.Content("~/TheTryTheme/fonts/bitter-latin.woff2")" as="font" type="font/woff2" crossorigin>
+
+    @* Compiled Tailwind CSS (Assets/Styles/site.css -> wwwroot/css/site.css). *@
+    <style asp-name="TheTryTheme" asp-append-version="true"></style>
+
+    @* Apply the saved theme before paint so there is no flash of the wrong mode. *@
+    <script>
+      document.documentElement.className += ' js';
+      (function () {
+        var theme = null;
+        try { theme = localStorage.getItem('ocTheme'); } catch (error) {}
+        if (!theme) { theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+        if (theme === 'dark') { document.documentElement.classList.add('dark'); }
+      })();
+    </script>
+
+    <resources type="HeadLink" />
+    <resources type="Stylesheet" />
+    <resources type="HeadScript" />
+    @await RenderSectionAsync("HeadMeta", required: false)
+</head>
+@* min-h-screen + flex column so a short page (e.g. Success) still pushes the footer to the bottom of
+   the viewport rather than leaving it floating mid-screen; main grows to take the slack. *@
+<body dir="@Orchard.CultureDir()" class="flex min-h-screen flex-col bg-white text-ink font-sans antialiased dark:scheme-dark dark:bg-night-surface dark:text-night-ink">
+
+<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-green-900 focus:px-4 focus:py-2 focus:text-white">@T["Skip to content"]</a>
+
+@* Scroll target for the header's "Create a site" link: the very top of the page. *@
+<span id="top"></span>
+
+@{
+    // The header nav always shows (so users can get back from Success/Confirm/etc.), but its links are
+    // in-page anchors (#create / #how / #faq) that only exist on the signup page — the Try module's
+    // Home/Index action, which is also the site's home route. The header uses this flag to keep the
+    // links as in-page anchors here, and home-prefix them (/#create) everywhere else.
+    var routeValues = Context.Request.RouteValues;
+    var onCreatePage =
+        string.Equals(routeValues["area"] as string, "OrchardCore.Try", StringComparison.OrdinalIgnoreCase) &&
+        string.Equals(routeValues["controller"] as string, "Home", StringComparison.OrdinalIgnoreCase) &&
+        string.Equals(routeValues["action"] as string, "Index", StringComparison.OrdinalIgnoreCase);
+}
+
+@* The chrome is the layout's; the page owns its own sections (so How it works / the FAQ do not
+   also land on the Success and Confirm pages). *@
+@await DisplayAsync(await New.SiteHeader(OnCreatePage: onCreatePage))
+
+<main id="main" class="flex flex-1 flex-col">
+    @await RenderSectionAsync("Messages", required: false)
+    @await RenderBodyAsync()
+</main>
+
+@await DisplayAsync(await New.SiteFooter())
+
+<script asp-name="TheTryTheme" at="Foot" asp-append-version="true"></script>
+<resources type="FootScript" />
+</body>
+</html>

@@ -1,0 +1,196 @@
+@import "tailwindcss"; /* stylelint-disable-line import-notation */
+
+/* Typography plugin (bundled in the standalone CLI): the `prose` classes give the HtmlBodyPart of a
+   Page (terms, privacy, ...) correct paragraph/heading/list rhythm. Without it Preflight strips the
+   default margins and heading sizes and the copy renders as one undifferentiated block. Its colours
+   are re-pointed at the brand with prose-* modifiers in Views/Content-Page.cshtml. */
+@plugin "@tailwindcss/typography"; /* stylelint-disable-line at-rule-no-unknown */
+
+/* Scan templates for the utility classes actually used. Two sources: this theme's views (layout,
+   header/footer, section shapes) and the Try module's views — the signup form itself lives there,
+   in OrchardCore.Try/Views, so its classes must be scanned too or they are stripped from the build. */
+@source "../../Views/**/*.cshtml"; /* stylelint-disable-line at-rule-no-unknown */
+@source "../../../../OrchardCore.Try/Views/**/*.cshtml"; /* stylelint-disable-line at-rule-no-unknown */
+
+/* Dark mode is class-based (a `.dark` class on <html>, set before paint), not the OS preference. */
+@custom-variant dark (&:where(.dark, .dark *)); /* stylelint-disable-line at-rule-no-unknown */
+
+/* ---------------------------------------------------------------------------
+   SELF-HOSTED FONTS
+   Bitter (headings), Inter (body), JetBrains Mono (labels) — variable woff2s served from
+   wwwroot/fonts, so the page makes no request to fonts.googleapis.com / fonts.gstatic.com. One file
+   per family covers every weight. The absolute `/TheTryTheme/…` path is the theme's static mount
+   (not relative, so the CSS build leaves it as-is).
+   --------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Bitter";
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url("/TheTryTheme/fonts/bitter-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Bitter";
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url("/TheTryTheme/fonts/bitter-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/TheTryTheme/fonts/inter-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/TheTryTheme/fonts/inter-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("/TheTryTheme/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("/TheTryTheme/fonts/jetbrains-mono-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---------------------------------------------------------------------------
+   DESIGN TOKENS
+   The single source of truth for the brand, shared with the main orchardcore.net site. These were
+   the inline `tailwind.config` in the mockup; in Tailwind v4 they live here as CSS variables, so
+   `bg-green-600`, `text-ink`, `font-serif`, `max-w-content`, etc. are generated from them.
+
+   Dark mode is utility-first: every colour that changes with the theme has a night-* partner here,
+   and markup opts in per use with the `dark:` variant (`bg-cream dark:bg-night-cream`). Colours
+   without a night-* partner (the green ramp, leaf, white text on green) are the brand itself and
+   deliberately render the same in both modes.
+   --------------------------------------------------------------------------- */
+@theme {
+  /* Brand green ramp (green-600 = primary accent, green-700 = hover). */
+  --color-green-50:  #ECF6EF;
+  --color-green-100: #D8EEDE;
+  --color-green-200: #AFDCBD;
+  --color-green-300: #7DC598;
+  --color-green-400: #3FA468;
+  --color-green-500: #1C9148;
+  --color-green-600: #15803D;
+  --color-green-700: #11672F;
+  --color-green-800: #0D4F25;
+  --color-green-900: #08361A;
+
+  --color-leaf:                #3FA468; /* bright accent (= green-400) */
+  --color-accent-bright:       #2FBF6B;
+  --color-accent-bright-hover: #54D488;
+
+  --color-cream:      #F5F8F6; /* green-tinted neutral surface */
+  --color-cream-deep: #EDF2EE;
+
+  --color-ink:      #0F1A14; /* body text */
+  --color-ink-soft: #566058; /* secondary text */
+
+  --color-rule: #E2E8E3; /* hairlines / thin bands */
+
+  /* The dark palette. Each token names the light utility it partners in markup, so a class list
+     always reads light-then-dark (`text-green-900 dark:text-night-heading`). */
+  --color-night:              #07150D; /* deepest page green (the header glass) */
+  --color-night-surface:      #12291B; /* page bands and panels    (pairs with bg-white) */
+  --color-night-cream:        #0C1E14; /* tinted band              (pairs with bg-cream) */
+  --color-night-track:        #08130C; /* solid thin bands         (pairs with bg-rule) */
+  --color-night-tint:         #103D23; /* selected / callout wash  (pairs with bg-green-100) */
+  --color-night-tint-strong:  #15512F; /* same, one step up        (pairs with hover:bg-green-200) */
+  --color-night-rule:         #21402E; /* hairlines                (pairs with border-rule / ring-rule) */
+  --color-night-ink:          #E4EFE8; /* body text                (pairs with text-ink) */
+  --color-night-ink-soft:     #9DB2A4; /* secondary text           (pairs with text-ink-soft) */
+  --color-night-heading:      #ECF7F0; /* headings                 (pairs with text-green-900) */
+  --color-night-heading-soft: #CFEAD8; /*                          (pairs with text-green-800) */
+  --color-night-link:         #86CDA0; /* links                    (pairs with text-green-700) */
+
+  /* Soft UI shadows (rgb 17 40 31 = ink-tinted, so they read green-grey rather than dead grey).
+     The header pair has heavier dark twins: an ink shadow disappears on a near-black page. */
+  --shadow-soft:              0 30px 40px -24px rgba(17, 40, 31, .16), 0 8px 18px -10px rgba(17, 40, 31, .08);
+  --shadow-header:            0 1px 0 rgba(17, 40, 31, .04), 0 10px 24px -20px rgba(17, 40, 31, .22);
+  --shadow-header-stuck:      0 1px 0 rgba(17, 40, 31, .05), 0 14px 34px -20px rgba(17, 40, 31, .32);
+  --shadow-header-dark:       0 1px 0 rgba(0, 0, 0, .4), 0 10px 24px -20px rgba(0, 0, 0, .6);
+  --shadow-header-stuck-dark: 0 1px 0 rgba(0, 0, 0, .5), 0 14px 34px -20px rgba(0, 0, 0, .7);
+
+  /* Type families. Bitter (headings), Inter (body), JetBrains Mono (labels). */
+  --font-serif: "Bitter", Georgia, serif;
+  --font-sans:  "Inter", system-ui, sans-serif;
+  --font-mono:  "JetBrains Mono", ui-monospace, monospace;
+
+  /* One standard content width for every band, the header, and the footer. */
+  --max-width-content: 1200px;
+}
+
+/* ---------------------------------------------------------------------------
+   LAYOUT VARIABLES
+   The two rhythm values JS and the components share. Everything colour lives in @theme above and is
+   applied from markup as utilities (with dark: twins), so nothing here changes with the theme.
+   --------------------------------------------------------------------------- */
+:root {
+  /* Sticky-header height; theme.js sets the exact px on menu open so the mobile menu overlay sits
+     directly below the header. This is the fallback before JS runs. */
+  --header-h: 4rem;
+
+  /* Warm vertical rhythm, shared by .band and the section scroll offsets below. */
+  --space-band: clamp(5rem, 10vw, 9rem);
+}
+
+/* ---------------------------------------------------------------------------
+   BASE
+   --------------------------------------------------------------------------- */
+@layer base {
+  /* `body` prefix raises specificity above Preflight's `h1..h6 { font-weight: inherit }`. */
+  body h1, body h2, body h3, .font-serif {
+    font-family: var(--font-serif);
+    font-weight: 600;
+  }
+  h1, h2, h3 { text-wrap: balance; }
+}
+
+/* ---------------------------------------------------------------------------
+   COMPONENTS
+   Only what a utility class cannot express: element rules with no markup hook (html, main), and
+   JS-driven state that needs html-level gating. Everything else — header glass, theme toggle,
+   scroll-spy highlight — is utilities in the markup.
+   --------------------------------------------------------------------------- */
+@layer components {
+  /* Warm vertical rhythm: whitespace, not rules, separates the sections. */
+  .band { padding-block: var(--space-band); }
+
+  /* Smooth in-page anchor scrolling for the header nav (disabled for reduced-motion users — the
+     smooth rule comes first so the media query wins). Anchor jumps clear the sticky header: the
+     negative margin cancels the .band top padding and leaves ~4.5rem above the heading. */
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+  main { scroll-margin-top: 5rem; }
+  section[id] { scroll-margin-top: calc(4.5rem - var(--space-band)); }
+
+  /* Subtle scroll reveal. Gated behind `html.js` so content is fully visible without JS; theme.js
+     adds `.is-visible` via IntersectionObserver (one-shot). The reduced-motion override comes after
+     so the media query wins. */
+  .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .js .reveal.is-visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal { opacity: 1; transform: none; transition: none; }
+  }
+}

@@ -1,0 +1,673 @@
+@model DemoSiteCreatedEmailViewModel
+@{
+    // GENERATED from Assets/Emails/demo-site-created.mjml by build-email.mjs. Do not edit by hand;
+    // edit the .mjml and re-run the script. Layout is cleared so the email is not wrapped in the
+    // site theme. The @@ escapes render as a single @ (CSS at-rules, the contact address); only the
+    // Model.* expressions are Razor.
+    Layout = string.Empty;
+}
+<!doctype html>
+<html lang="und" dir="auto" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+  <title>Your Orchard Core demo site is ready</title>
+  <!--[if !mso]><!-->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!--<![endif]-->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style type="text/css">
+    #outlook a {
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    table,
+    td {
+      border-collapse: collapse;
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+    }
+
+    img {
+      border: 0;
+      height: auto;
+      line-height: 100%;
+      outline: none;
+      text-decoration: none;
+      -ms-interpolation-mode: bicubic;
+    }
+
+    p {
+      display: block;
+      margin: 13px 0;
+    }
+  </style>
+  <!--[if mso]>
+    <noscript>
+    <xml>
+    <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+    </xml>
+    </noscript>
+    <![endif]-->
+  <!--[if lte mso 11]>
+    <style type="text/css">
+      .mj-outlook-group-fix { width:100% !important; }
+    </style>
+    <![endif]-->
+  <!--[if !mso]><!-->
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@@600;700&display=swap" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@@400;500;600;700&display=swap" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    @@import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);
+    @@import url(https://fonts.googleapis.com/css2?family=Bitter:wght@@600;700&display=swap);
+    @@import url(https://fonts.googleapis.com/css2?family=Inter:wght@@400;500;600;700&display=swap);
+  </style>
+  <!--<![endif]-->
+  <style type="text/css">
+    @@media only screen and (min-width:480px) {
+      .mj-column-per-100 {
+        width: 100% !important;
+        max-width: 100%;
+      }
+    }
+  </style>
+  <style media="screen and (min-width:480px)">
+    .moz-text-html .mj-column-per-100 {
+      width: 100% !important;
+      max-width: 100%;
+    }
+  </style>
+  <style type="text/css">
+    a {
+      color: #15803D;
+    }
+
+    .oc-link a {
+      color: #15803D !important;
+      text-decoration: underline;
+    }
+
+    /* Credential values: selectable, wrapping, and unmolested by client auto-linking. */
+    .oc-cred {
+      font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace !important;
+      font-size: 15px;
+      color: #0F1A14;
+      word-break: break-all;
+    }
+
+    /* Stop iOS/Gmail turning the site name or password into a blue tel:/link. */
+    a[x-apple-data-detectors],
+    .unstyle-auto-detected-links a,
+    .aBn {
+      color: inherit !important;
+      text-decoration: none !important;
+      font-size: inherit !important;
+      font-family: inherit !important;
+      font-weight: inherit !important;
+      line-height: inherit !important;
+      border-bottom: 0 !important;
+    }
+
+    @@media only screen and (max-width: 480px) {
+      .oc-h1 div {
+        font-size: 26px !important;
+        line-height: 34px !important;
+      }
+
+      /* Full-width tap targets on phones. The inner table is shrink-to-fit by default,
+           so it has to be stretched too - widening the <a> alone does nothing. */
+      .oc-btn table {
+        width: 100% !important;
+      }
+
+      .oc-btn a {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+    }
+
+    @@media (prefers-color-scheme: dark) {
+
+      /* MJML paints section/column backgrounds onto the <td>, not the wrapper div,
+           so every one of these needs the td in the selector or a white box survives. */
+      body,
+      .oc-body,
+      .oc-body>table,
+      .oc-body>table>tbody>tr>td {
+        background-color: #0C1E14 !important;
+      }
+
+      .oc-card,
+      .oc-card table,
+      .oc-card td {
+        background-color: #12291B !important;
+      }
+
+      .oc-panel,
+      .oc-panel table,
+      .oc-panel td {
+        background-color: #16331F !important;
+      }
+
+      .oc-panel td {
+        border-color: #21402E !important;
+      }
+
+      .oc-h1 div,
+      .oc-h2 div,
+      .oc-h2 span,
+      .oc-cred {
+        color: #ECF6EF !important;
+      }
+
+      .oc-text div,
+      .oc-text p,
+      .oc-text span {
+        color: #9DB2A4 !important;
+      }
+
+      .oc-link a {
+        color: #86CDA0 !important;
+      }
+
+      .oc-hr p {
+        border-color: #21402E !important;
+      }
+
+      /* Inline colours on <span>/<strong> would otherwise stay near-black on near-black. */
+      .oc-cred-label {
+        color: #9DB2A4 !important;
+      }
+
+      /* The expiry notice stays amber in dark mode - it is a warning, not chrome.
+           It carries its own classes so the green .oc-panel/.oc-card rules cannot repaint it. */
+      .oc-note,
+      .oc-note table,
+      .oc-note td {
+        background-color: #33270F !important;
+      }
+
+      .oc-note-text div,
+      .oc-note-text p {
+        color: #D6C09A !important;
+      }
+
+      .oc-note-strong {
+        color: #F0C880 !important;
+      }
+
+      /* Swap the colour lockup (dark-grey wordmark) for the white one. */
+      .oc-logo-light-mode {
+        display: none !important;
+      }
+
+      .oc-logo-dark-mode {
+        display: block !important;
+      }
+    }
+  </style>
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <!-- Apple Mail / iOS dark mode. Outlook and Gmail ignore this and keep the light design. -->
+</head>
+
+<body class="oc-body" style="word-spacing:normal;background-color:#EDF2EE;">
+  <div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">Activate your site, then sign in to the admin with the credentials inside.</div>
+  <div aria-label="Your Orchard Core demo site is ready" aria-roledescription="email" role="article" lang="und" dir="auto" style="word-spacing:normal;background-color:#EDF2EE;">
+    <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div style="margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:0;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                  <tbody>
+                    <tr>
+                      <td style="vertical-align:top;padding:0;">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                          <tbody>
+                            <tr>
+                              <td style="font-size:0px;word-break:break-word;">
+                                <div style="height:28px;line-height:28px;">&#8202;</div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><![endif]-->
+    <!-- The email card. Flat, bordered, square: the site's rounded panels cannot be
+         reproduced in Outlook, which does not clip child cells to a border radius. -->
+    <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="oc-card-outlook" role="presentation" style="width:600px;" width="600" bgcolor="#FFFFFF" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div class="oc-card" style="background:#FFFFFF;background-color:#FFFFFF;margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#FFFFFF;background-color:#FFFFFF;width:100%;">
+        <tbody>
+          <tr>
+            <td style="border:1px solid #E2E8E3;direction:ltr;font-size:0px;padding:0;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><![endif]-->
+              <!-- Brand bar. The lockup already carries the "Orchard Core" wordmark, so there is no
+           text beside it to say it twice.
+
+           Two images, one shown at a time. The colour lockup's wordmark is dark grey, which
+           disappears against the dark header in dark mode, so clients that honour
+           prefers-color-scheme swap to the white lockup. Everything else keeps the colour
+           one. Only the visible image's alt text renders when images are blocked. -->
+              <!--[if mso | IE]><tr><td class="oc-panel-outlook" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="oc-panel-outlook" role="presentation" style="width:598px;" width="598" bgcolor="#F5F8F6" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div class="oc-panel" style="background:#F5F8F6;background-color:#F5F8F6;margin:0px auto;max-width:598px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#F5F8F6;background-color:#F5F8F6;width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="border-bottom:1px solid #E2E8E3;direction:ltr;font-size:0px;padding:22px 32px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:534px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="left" style="font-size:0px;padding:0;word-break:break-word;">
+                                          <div style="font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;line-height:26px;text-align:left;color:#566058;"><img class="oc-logo-light-mode" src="https://docs.orchardcore.net/en/latest/reference/branding/assets/logo/color/orchard-core-logo-color-high-resolution.png" alt="Orchard Core" width="150" style="width:150px;max-width:150px;height:auto;border:0;display:block;" />
+                                            <img class="oc-logo-dark-mode" src="https://docs.orchardcore.net/en/latest/reference/branding/assets/logo/light/orchard-core-logo-light-high-resolution.png" alt="Orchard Core" width="150" style="width:150px;max-width:150px;height:auto;border:0;display:none;" />
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><![endif]-->
+              <!-- Hero -->
+              <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:598px;" width="598" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:598px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:36px 32px 0 32px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:534px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="left" class="oc-h1" style="font-size:0px;padding:0 0 14px 0;word-break:break-word;">
+                                          <div style="font-family:Bitter, Georgia, 'Times New Roman', serif;font-size:30px;font-weight:600;line-height:38px;text-align:left;color:#08361A;">Your demo site &lsquo;@Model.SiteName&rsquo; has been created.</div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td align="left" class="oc-text" style="font-size:0px;padding:0;word-break:break-word;">
+                                          <div style="font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;line-height:26px;text-align:left;color:#566058;">There are just two steps to do.</div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:598px;" width="598" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:598px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:28px 32px 0 32px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:534px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" class="oc-hr" style="font-size:0px;padding:0;word-break:break-word;">
+                                          <p style="border-top:solid 1px #E2E8E3;font-size:1px;margin:0px auto;width:100%;">
+                                          </p>
+                                          <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" style="border-top:solid 1px #E2E8E3;font-size:1px;margin:0px auto;width:534px;" role="presentation" width="534px" ><tr><td style="height:0;line-height:0;"> &nbsp;
+</td></tr></table><![endif]-->
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><![endif]-->
+              <!-- Step 1. The step number lives in the heading, not as a separate numeral. -->
+              <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:598px;" width="598" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:598px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:28px 32px 0 32px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:534px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="left" class="oc-h2" style="font-size:0px;padding:0 0 10px 0;word-break:break-word;">
+                                          <div style="font-family:Bitter, Georgia, 'Times New Roman', serif;font-size:20px;font-weight:600;line-height:28px;text-align:left;color:#08361A;">Step 1: Activate your site</div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td align="left" class="oc-text" style="font-size:0px;padding:0 0 20px 0;word-break:break-word;">
+                                          <div style="font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:15px;line-height:24px;text-align:left;color:#566058;">Open the activation link to bring your site online.</div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td align="left" class="oc-btn" style="font-size:0px;padding:0;word-break:break-word;">
+                                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
+                                            <tbody>
+                                              <tr>
+                                                <td align="center" bgcolor="#15803D" role="presentation" style="border:none;border-radius:6px;cursor:auto;mso-padding-alt:14px 26px;background:#15803D;" valign="middle">
+                                                  <a href="@Model.SetupUrl" style="display:inline-block;background:#15803D;color:#FFFFFF;font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:15px;font-weight:600;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:14px 26px;mso-padding-alt:0px;border-radius:6px;" target="_blank"> Activate your site </a>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:598px;" width="598" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:598px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:28px 32px 0 32px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:534px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="center" class="oc-hr" style="font-size:0px;padding:0;word-break:break-word;">
+                                          <p style="border-top:solid 1px #E2E8E3;font-size:1px;margin:0px auto;width:100%;">
+                                          </p>
+                                          <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" style="border-top:solid 1px #E2E8E3;font-size:1px;margin:0px auto;width:534px;" role="presentation" width="534px" ><tr><td style="height:0;line-height:0;"> &nbsp;
+</td></tr></table><![endif]-->
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><![endif]-->
+              <!-- Step 2 -->
+              <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:598px;" width="598" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:598px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:28px 32px 0 32px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:534px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="left" class="oc-h2" style="font-size:0px;padding:0 0 10px 0;word-break:break-word;">
+                                          <div style="font-family:Bitter, Georgia, 'Times New Roman', serif;font-size:20px;font-weight:600;line-height:28px;text-align:left;color:#08361A;">Step 2: Log in to the admin</div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td align="left" class="oc-text" style="font-size:0px;padding:0 0 18px 0;word-break:break-word;">
+                                          <div style="font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:15px;line-height:24px;text-align:left;color:#566058;">Sign in with these credentials, then change the password once you&rsquo;re in.</div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><![endif]-->
+              <!-- Credentials panel -->
+              <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:598px;" width="598" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:598px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:0 32px 0 32px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="oc-panel-outlook" style="vertical-align:top;width:534px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix oc-panel" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="background-color:#F5F8F6;border:1px solid #E2E8E3;vertical-align:top;padding:18px 20px;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="left" style="font-size:0px;padding:0;word-break:break-word;">
+                                          <table cellpadding="0" cellspacing="0" width="100%" border="0" style="color:#000000;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;border:none;">
+                                            <tr>
+                                              <td class="oc-cred-label" style="padding:0 0 10px 0;width:96px;font-family:Inter,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#566058;vertical-align:top;"> Username </td>
+                                              <td class="oc-cred" style="padding:0 0 10px 0;">@Model.UserName</td>
+                                            </tr>
+                                            <tr>
+                                              <td class="oc-cred-label" style="padding:0;width:96px;font-family:Inter,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#566058;vertical-align:top;"> Password </td>
+                                              <td class="oc-cred" style="padding:0;">@Model.Password</td>
+                                            </tr>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:598px;" width="598" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:598px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:20px 32px 0 32px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:534px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="left" class="oc-btn" style="font-size:0px;padding:0;word-break:break-word;">
+                                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
+                                            <tbody>
+                                              <tr>
+                                                <td align="center" bgcolor="#D8EEDE" role="presentation" style="border:none;border-radius:6px;cursor:auto;mso-padding-alt:14px 26px;background:#D8EEDE;" valign="middle">
+                                                  <a href="@Model.SiteUrl/admin" style="display:inline-block;background:#D8EEDE;color:#0D4F25;font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:15px;font-weight:600;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:14px 26px;mso-padding-alt:0px;border-radius:6px;" target="_blank"> Go to the admin </a>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><![endif]-->
+              <!-- Expiry notice. Amber, not green: this is a warning, and green reads as success. -->
+              <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:598px;" width="598" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:598px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:30px 32px 36px 32px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="oc-note-outlook" style="vertical-align:top;width:534px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix oc-note" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                              <tr>
+                                <td style="background-color:#FDF4E7;vertical-align:top;padding:14px 16px;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                                    <tbody>
+                                      <tr>
+                                        <td align="left" class="oc-note-text" style="font-size:0px;padding:0;word-break:break-word;">
+                                          <div style="font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:14px;line-height:22px;text-align:left;color:#6B5636;"><span class="oc-note-strong" style="color:#7A4A0B;font-weight:600;">Heads up:</span> this site will be disabled on <strong class="oc-note-strong" style="color:#7A4A0B;">Sunday at 10PM CET</strong>. Export anything you want to keep before then.</div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><![endif]-->
+    <!-- Postscript sits on the page background, outside the card. -->
+    <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div style="margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:18px 24px 30px 24px;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:552px;" ><![endif]-->
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                  <tbody>
+                    <tr>
+                      <td style="vertical-align:top;padding:0;">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                          <tbody>
+                            <tr>
+                              <td align="center" class="oc-text" style="font-size:0px;padding:0;word-break:break-word;">
+                                <div style="font-family:Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:12px;line-height:18px;text-align:center;color:#566058;">You received this email because a demo site was requested for this address at <span style="white-space:nowrap;">try.orchardcore.net</span>.</div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><![endif]-->
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Compiles Assets/Styles/site.css -> wwwroot/css/site.css with the Tailwind CLI on build (no Node.js required). -->
+    <PackageReference Include="Lombiq.Tailwind.Targets" Version="1.0.0-alpha.9.nest-644" />
+  </ItemGroup>
+
+  <!-- The signup form and section shapes live in the OrchardCore.Try module, not this theme, and
+       site.css @source-scans them so their utility classes are compiled. But the package's MSBuild
+       up-to-date check only globs THIS project's files, so editing a Try view would not retrigger the
+       Tailwind build and a newly-used class would silently go missing from the output. Add those views
+       to the incrementality inputs so a change to them rebuilds the CSS. Keep this in sync with the
+       @source globs in Assets/Styles/site.css. -->
+  <PropertyGroup>
+    <TailwindContentGlobsAdditional>$(MSBuildProjectDirectory)/../../OrchardCore.Try/Views/**/*.cshtml</TailwindContentGlobsAdditional>
+  </PropertyGroup>
+
+  <!-- TEMPORARY workaround (remove once Lombiq.Tailwind.Targets ships a fix): its default download
+       command has no fail-on-error or retry flags, so a transient GitHub error body gets saved and
+       then executed as the CLI, failing CI with "Syntax error: redirection unexpected". The override
+       below adds curl's fail-fast and retry flags. Must live in the csproj body (not
+       Directory.Build.props) so the package's .props-defined paths are already set. -->
+  <PropertyGroup>
+    <TailwindDownloadCommand Condition="'$(TailwindCliOs)' != 'windows'">curl -fSL --retry 5 --retry-delay 3 --retry-all-errors -o "$(TailwindCliTempPath)" "$(TailwindCliDownloadUrl)"</TailwindDownloadCommand>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OrchardCore.Theme.Targets" Version="3.0.1" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="3.0.1" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="3.0.1" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="3.0.1" />
+  </ItemGroup>
+
+</Project>

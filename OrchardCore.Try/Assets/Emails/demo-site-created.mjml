@@ -1,0 +1,283 @@
+<!--
+  Orchard Core demo-site email. One file, no includes.
+
+  Palette and type are lifted from the Try Orchard Core site (try.html):
+    green-600 #15803D  primary action    green-900 #08361A  all headings
+    ink-soft  #566058  body copy         cream     #F5F8F6  panels
+    rule      #E2E8E3  borders           green-100 #D8EEDE  secondary action
+    cream-deep #EDF2EE page background
+
+  The site sets every h1/h2/h3 in Bitter and colours them green-900, so the email does too.
+  It uses no monospace and no uppercase eyebrow labels; the only monospace here is on the
+  credential values, where telling l from 1 in a password actually matters. The amber warning
+  is the one colour added to the site's palette - it has no warning token of its own.
+
+  Fonts degrade in the many clients that ignore web fonts:
+    Bitter -> Georgia (serif headings), Inter -> Helvetica/Arial, JetBrains Mono -> Consolas.
+
+  Placeholders, filled by string.Format:
+    {0} site name   {1} activation URL   {2} site URL   {3} username   {4} password
+-->
+<mjml>
+  <mj-head>
+    <mj-title>Your Orchard Core demo site is ready</mj-title>
+    <mj-preview>Activate your site, then sign in to the admin with the credentials inside.</mj-preview>
+
+    <mj-font name="Bitter" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&display=swap" />
+    <mj-font name="Inter" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <mj-font name="JetBrains Mono" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
+
+    <mj-raw>
+      <meta name="color-scheme" content="light dark" />
+      <meta name="supported-color-schemes" content="light dark" />
+    </mj-raw>
+
+    <mj-attributes>
+      <mj-body background-color="#EDF2EE" />
+      <mj-section padding="0" />
+      <mj-column padding="0" />
+      <mj-text
+        font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="16px"
+        line-height="26px"
+        color="#566058"
+        padding="0" />
+      <mj-button
+        font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="15px"
+        font-weight="600"
+        border-radius="6px"
+        inner-padding="14px 26px"
+        padding="0" />
+      <mj-divider border-width="1px" border-color="#E2E8E3" padding="0" />
+
+      <mj-class name="h1" font-family="Bitter, Georgia, 'Times New Roman', serif" font-size="30px" line-height="38px" font-weight="600" color="#08361A" />
+      <mj-class name="h2" font-family="Bitter, Georgia, 'Times New Roman', serif" font-size="20px" line-height="28px" font-weight="600" color="#08361A" />
+      <mj-class name="muted" font-size="15px" line-height="24px" color="#566058" />
+    </mj-attributes>
+
+    <mj-style>
+      a { color: #15803D; }
+      .oc-link a { color: #15803D !important; text-decoration: underline; }
+
+      /* Credential values: selectable, wrapping, and unmolested by client auto-linking. */
+      .oc-cred { font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace !important;
+                 font-size: 15px; color: #0F1A14; word-break: break-all; }
+
+      /* Stop iOS/Gmail turning the site name or password into a blue tel:/link. */
+      a[x-apple-data-detectors], .unstyle-auto-detected-links a, .aBn {
+        color: inherit !important; text-decoration: none !important; font-size: inherit !important;
+        font-family: inherit !important; font-weight: inherit !important; line-height: inherit !important;
+        border-bottom: 0 !important;
+      }
+
+      @media only screen and (max-width: 480px) {
+        .oc-h1 div { font-size: 26px !important; line-height: 34px !important; }
+        /* Full-width tap targets on phones. The inner table is shrink-to-fit by default,
+           so it has to be stretched too - widening the <a> alone does nothing. */
+        .oc-btn table { width: 100% !important; }
+        .oc-btn a { display: block !important; width: 100% !important; box-sizing: border-box !important; }
+      }
+    </mj-style>
+
+    <!-- Apple Mail / iOS dark mode. Outlook and Gmail ignore this and keep the light design. -->
+    <mj-style>
+      @media (prefers-color-scheme: dark) {
+        /* MJML paints section/column backgrounds onto the <td>, not the wrapper div,
+           so every one of these needs the td in the selector or a white box survives. */
+        body, .oc-body, .oc-body > table, .oc-body > table > tbody > tr > td { background-color: #0C1E14 !important; }
+        .oc-card, .oc-card table, .oc-card td { background-color: #12291B !important; }
+        .oc-panel, .oc-panel table, .oc-panel td { background-color: #16331F !important; }
+        .oc-panel td { border-color: #21402E !important; }
+
+        .oc-h1 div, .oc-h2 div, .oc-h2 span, .oc-cred { color: #ECF6EF !important; }
+        .oc-text div, .oc-text p, .oc-text span { color: #9DB2A4 !important; }
+        .oc-link a { color: #86CDA0 !important; }
+        .oc-hr p { border-color: #21402E !important; }
+
+        /* Inline colours on <span>/<strong> would otherwise stay near-black on near-black. */
+        .oc-cred-label { color: #9DB2A4 !important; }
+
+        /* The expiry notice stays amber in dark mode - it is a warning, not chrome.
+           It carries its own classes so the green .oc-panel/.oc-card rules cannot repaint it. */
+        .oc-note, .oc-note table, .oc-note td { background-color: #33270F !important; }
+        .oc-note-text div, .oc-note-text p { color: #D6C09A !important; }
+        .oc-note-strong { color: #F0C880 !important; }
+
+        /* Swap the colour lockup (dark-grey wordmark) for the white one. */
+        .oc-logo-light-mode { display: none !important; }
+        .oc-logo-dark-mode { display: block !important; }
+      }
+    </mj-style>
+  </mj-head>
+
+  <mj-body width="600px" background-color="#EDF2EE" css-class="oc-body">
+
+    <mj-section padding="0">
+      <mj-column>
+        <mj-spacer height="28px" />
+      </mj-column>
+    </mj-section>
+
+    <!-- The email card. Flat, bordered, square: the site's rounded panels cannot be
+         reproduced in Outlook, which does not clip child cells to a border radius. -->
+    <mj-wrapper
+      background-color="#FFFFFF"
+      border="1px solid #E2E8E3"
+      padding="0"
+      css-class="oc-card">
+
+      <!-- Brand bar. The lockup already carries the "Orchard Core" wordmark, so there is no
+           text beside it to say it twice.
+
+           Two images, one shown at a time. The colour lockup's wordmark is dark grey, which
+           disappears against the dark header in dark mode, so clients that honour
+           prefers-color-scheme swap to the white lockup. Everything else keeps the colour
+           one. Only the visible image's alt text renders when images are blocked. -->
+      <mj-section background-color="#F5F8F6" border-bottom="1px solid #E2E8E3" padding="22px 32px" css-class="oc-panel">
+        <mj-column>
+          <mj-text align="left" padding="0">
+            <img
+              class="oc-logo-light-mode"
+              src="https://docs.orchardcore.net/en/latest/reference/branding/assets/logo/color/orchard-core-logo-color-high-resolution.png"
+              alt="Orchard Core"
+              width="150"
+              style="width:150px;max-width:150px;height:auto;border:0;display:block;" />
+            <img
+              class="oc-logo-dark-mode"
+              src="https://docs.orchardcore.net/en/latest/reference/branding/assets/logo/light/orchard-core-logo-light-high-resolution.png"
+              alt="Orchard Core"
+              width="150"
+              style="width:150px;max-width:150px;height:auto;border:0;display:none;" />
+          </mj-text>
+        </mj-column>
+      </mj-section>
+
+      <!-- Hero -->
+      <mj-section padding="36px 32px 0 32px">
+        <mj-column>
+          <mj-text mj-class="h1" padding="0 0 14px 0" css-class="oc-h1">
+            Your demo site &lsquo;{0}&rsquo; has been created.
+          </mj-text>
+
+          <mj-text padding="0" css-class="oc-text">
+            There are just two steps to do.
+          </mj-text>
+        </mj-column>
+      </mj-section>
+
+      <mj-section padding="28px 32px 0 32px">
+        <mj-column>
+          <mj-divider css-class="oc-hr" />
+        </mj-column>
+      </mj-section>
+
+      <!-- Step 1. The step number lives in the heading, not as a separate numeral. -->
+      <mj-section padding="28px 32px 0 32px">
+        <mj-column>
+          <mj-text mj-class="h2" padding="0 0 10px 0" css-class="oc-h2">
+            Step 1: Activate your site
+          </mj-text>
+
+          <mj-text mj-class="muted" padding="0 0 20px 0" css-class="oc-text">
+            Open the activation link to bring your site online.
+          </mj-text>
+
+          <mj-button
+            href="{1}"
+            background-color="#15803D"
+            color="#FFFFFF"
+            align="left"
+            css-class="oc-btn">
+            Activate your site
+          </mj-button>
+        </mj-column>
+      </mj-section>
+
+      <mj-section padding="28px 32px 0 32px">
+        <mj-column>
+          <mj-divider css-class="oc-hr" />
+        </mj-column>
+      </mj-section>
+
+      <!-- Step 2 -->
+      <mj-section padding="28px 32px 0 32px">
+        <mj-column>
+          <mj-text mj-class="h2" padding="0 0 10px 0" css-class="oc-h2">
+            Step 2: Log in to the admin
+          </mj-text>
+
+          <mj-text mj-class="muted" padding="0 0 18px 0" css-class="oc-text">
+            Sign in with these credentials, then change the password once you&rsquo;re in.
+          </mj-text>
+        </mj-column>
+      </mj-section>
+
+      <!-- Credentials panel -->
+      <mj-section padding="0 32px 0 32px">
+        <mj-column
+          background-color="#F5F8F6"
+          border="1px solid #E2E8E3"
+          padding="18px 20px"
+          css-class="oc-panel">
+
+          <mj-table padding="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td class="oc-cred-label" style="padding:0 0 10px 0;width:96px;font-family:Inter,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#566058;vertical-align:top;">
+                Username
+              </td>
+              <td class="oc-cred" style="padding:0 0 10px 0;">{3}</td>
+            </tr>
+            <tr>
+              <td class="oc-cred-label" style="padding:0;width:96px;font-family:Inter,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#566058;vertical-align:top;">
+                Password
+              </td>
+              <td class="oc-cred" style="padding:0;">{4}</td>
+            </tr>
+          </mj-table>
+        </mj-column>
+      </mj-section>
+
+      <mj-section padding="20px 32px 0 32px">
+        <mj-column>
+          <mj-button
+            href="{2}/admin"
+            background-color="#D8EEDE"
+            color="#0D4F25"
+            align="left"
+            css-class="oc-btn">
+            Go to the admin
+          </mj-button>
+        </mj-column>
+      </mj-section>
+
+      <!-- Expiry notice. Amber, not green: this is a warning, and green reads as success. -->
+      <mj-section padding="30px 32px 36px 32px">
+        <mj-column
+          background-color="#FDF4E7"
+          padding="14px 16px"
+          css-class="oc-note">
+
+          <mj-text mj-class="muted" font-size="14px" line-height="22px" color="#6B5636" padding="0" css-class="oc-note-text">
+            <span class="oc-note-strong" style="color:#7A4A0B;font-weight:600;">Heads up:</span>
+            this site will be disabled on
+            <strong class="oc-note-strong" style="color:#7A4A0B;">Sunday at 10PM CET</strong>.
+            Export anything you want to keep before then.
+          </mj-text>
+        </mj-column>
+      </mj-section>
+
+    </mj-wrapper>
+
+    <!-- Postscript sits on the page background, outside the card. -->
+    <mj-section padding="18px 24px 30px 24px">
+      <mj-column>
+        <mj-text align="center" font-size="12px" line-height="18px" color="#566058" padding="0" css-class="oc-text">
+          You received this email because a demo site was requested for this address at
+          <span style="white-space:nowrap;">try.orchardcore.net</span>.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+  </mj-body>
+</mjml>

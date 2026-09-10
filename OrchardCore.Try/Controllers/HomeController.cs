@@ -5,6 +5,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OrchardCore.Abstractions.Setup;
+using OrchardCore.DisplayManagement;
 using OrchardCore.Email;
 using OrchardCore.Environment.Shell;
 using OrchardCore.Environment.Shell.Configuration;
@@ -17,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -34,7 +36,7 @@ public sealed partial class HomeController : Controller
 
     private const string defaultAdminName = "admin";
     private const string dataProtectionPurpose = "Password";
-    private const string emailSubject = "Try Orchard Core";
+    private const string emailSubject = "Your Orchard Core demo site is ready";
     private const bool emailToBcc = false;
 
     private readonly IUserService _userService;
@@ -46,6 +48,8 @@ public sealed partial class HomeController : Controller
     private readonly IShellConfiguration _shellConfiguration;
     private readonly IClock _clock;
     private readonly IDataProtectionProvider _dataProtectionProvider;
+    private readonly IDisplayHelper _displayHelper;
+    private readonly HtmlEncoder _htmlEncoder;
     private readonly ILogger<HomeController> _logger;
 
     public HomeController(
@@ -58,6 +62,8 @@ public sealed partial class HomeController : Controller
         IShellConfiguration shellConfiguration,
         IClock clock,
         IDataProtectionProvider dataProtectionProvider,
+        IDisplayHelper displayHelper,
+        HtmlEncoder htmlEncoder,
         ILogger<HomeController> logger,
         IStringLocalizer<HomeController> stringLocalizer)
     {
@@ -70,6 +76,8 @@ public sealed partial class HomeController : Controller
         _shellConfiguration = shellConfiguration;
         _clock = clock;
         _dataProtectionProvider = dataProtectionProvider;
+        _displayHelper = displayHelper;
+        _htmlEncoder = htmlEncoder;
         _logger = logger;
 
         T = stringLocalizer;
@@ -91,6 +99,11 @@ public sealed partial class HomeController : Controller
     [ActionName(nameof(Index))]
     public async Task<IActionResult> IndexPost(RegisterUserViewModel model)
     {
+        // The form is submitted with fetch() from the create page (see theme.js), which sends this
+        // header. For those requests we answer with JSON so the page can swap the form for a success
+        // message in place; a normal (no-JS) post still gets the redirect/redisplay below.
+        var isAjax = string.Equals(Request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.OrdinalIgnoreCase);
+
         if (!model.AcceptTerms)
         {
             ModelState.AddModelError(nameof(RegisterUserViewModel.AcceptTerms), T["Please, accept the terms and conditions."]);
@@ -103,30 +116,12 @@ public sealed partial class HomeController : Controller
 
         if (ModelState.IsValid)
         {
-            if (_shellHost.TryGetSettings(model.Handle, out var shellSettings))
+            if (_shellHost.TryGetSettings(model.Handle, out _))
             {
                 ModelState.AddModelError(nameof(RegisterUserViewModel.Handle), T["This site name already exists."]);
             }
             else
             {
-                var adminName = defaultAdminName;
-                var adminPassword = GenerateRandomPassword();
-                var siteName = model.SiteName;
-
-                shellSettings = new ShellSettings
-                {
-                    Name = model.Handle,
-                    RequestUrlPrefix = model.Handle.ToLower(),
-                    RequestUrlHost = null,
-                    State = TenantState.Uninitialized
-                };
-                shellSettings["Description"] = $"{model.SiteName} {model.Email}";
-                shellSettings["RecipeName"] = model.RecipeName;
-                shellSettings["DatabaseProvider"] = "Sqlite";
-
-                await _shellSettingsManager.SaveSettingsAsync(shellSettings);
-                var shellContext = await _shellHost.GetOrCreateShellContextAsync(shellSettings);
-
                 var recipes = await _setupService.GetSetupRecipesAsync();
                 var recipe = recipes.FirstOrDefault(x => x.Name == model.RecipeName);
 
@@ -134,29 +129,85 @@ public sealed partial class HomeController : Controller
                 {
                     ModelState.AddModelError(nameof(RegisterUserViewModel.RecipeName), T["Invalid recipe name."]);
                 }
-
-                var siteUrl = GetTenantUrl(shellSettings);
-
-                var dataProtector = _dataProtectionProvider.CreateProtector(dataProtectionPurpose).ToTimeLimitedDataProtector();
-                var encryptedPassword = dataProtector.Protect(adminPassword, _clock.UtcNow.Add(new TimeSpan(24, 0, 0)));
-                var confirmationLink = Url.Action(nameof(Confirm), "Home", new { email = model.Email, handle = model.Handle, siteName = model.SiteName, ep = encryptedPassword }, Request.Scheme);
-
-                var message = new MailMessage
+                else
                 {
-                    To = model.Email,
-                    Subject = emailSubject,
-                    HtmlBody = T["Hello,<br><br>Your demo site '{0}' has been created.<br><br>1) Setup your site by opening <a href=\"{1}\">this link</a>.<br><br>2) Log into the <a href=\"{2}/admin\">admin</a> with these credentials:<br>Username: {3}<br>Password: {4}<br><br>Note: The site will be disabled on Sunday at 10PM CET.", siteName, confirmationLink, siteUrl, adminName, adminPassword]
-                };
+                    var adminName = defaultAdminName;
+                    var adminPassword = GenerateRandomPassword();
+                    var siteName = model.SiteName;
 
-                if (bool.TryParse(_shellConfiguration["OrchardCore_Try:EmailToBcc"] ?? string.Empty, out var result) && result)
-                {
-                    message.Bcc = _smtpSettingsOptions.Value.DefaultSender;
+                    var shellSettings = new ShellSettings
+                    {
+                        Name = model.Handle,
+                        RequestUrlPrefix = model.Handle.ToLower(),
+                        RequestUrlHost = null,
+                        State = TenantState.Uninitialized
+                    };
+                    shellSettings["Description"] = $"{model.SiteName} {model.Email}";
+                    shellSettings["RecipeName"] = model.RecipeName;
+                    shellSettings["DatabaseProvider"] = "Sqlite";
+
+                    await _shellSettingsManager.SaveSettingsAsync(shellSettings);
+                    await _shellHost.GetOrCreateShellContextAsync(shellSettings);
+
+                    var siteUrl = GetTenantUrl(shellSettings);
+
+                    var dataProtector = _dataProtectionProvider.CreateProtector(dataProtectionPurpose).ToTimeLimitedDataProtector();
+                    var encryptedPassword = dataProtector.Protect(adminPassword, _clock.UtcNow.Add(new TimeSpan(24, 0, 0)));
+                    var confirmationLink = Url.Action(nameof(Confirm), "Home", new { email = model.Email, handle = model.Handle, siteName = model.SiteName, ep = encryptedPassword }, Request.Scheme);
+
+                    // The email body is the DemoSiteCreatedEmail shape, rendered from
+                    // Views/DemoSiteCreatedEmail.cshtml. Rendering a shape (rather than formatting a big
+                    // HTML string) keeps the markup in a real Razor template.
+                    var emailModel = new DemoSiteCreatedEmailViewModel
+                    {
+                        SiteName = siteName,
+                        SetupUrl = confirmationLink,
+                        SiteUrl = siteUrl,
+                        UserName = adminName,
+                        Password = adminPassword
+                    };
+
+                    string htmlBody;
+                    using (var writer = new StringWriter())
+                    {
+                        var htmlContent = await _displayHelper.ShapeExecuteAsync(emailModel);
+                        htmlContent.WriteTo(writer, _htmlEncoder);
+                        htmlBody = writer.ToString();
+                    }
+
+                    var message = new MailMessage
+                    {
+                        To = model.Email,
+                        Subject = emailSubject,
+                        HtmlBody = htmlBody
+                    };
+
+                    if (bool.TryParse(_shellConfiguration["OrchardCore_Try:EmailToBcc"] ?? string.Empty, out var result) && result)
+                    {
+                        message.Bcc = _smtpSettingsOptions.Value.DefaultSender;
+                    }
+
+                    await _emailService.SendAsync(message);
+
+                    if (isAjax)
+                    {
+                        return Json(new { success = true });
+                    }
+
+                    return RedirectToAction(nameof(Success));
                 }
-
-                await _emailService.SendAsync(message);
-
-                return RedirectToAction(nameof(Success));
             }
+        }
+
+        if (isAjax)
+        {
+            // One message per field, keyed by the model property name so the page can drop each into the
+            // matching field's validation slot (data-valmsg-for).
+            var errors = ModelState
+                .Where(entry => entry.Value.Errors.Count > 0)
+                .ToDictionary(entry => entry.Key, entry => entry.Value.Errors[0].ErrorMessage);
+
+            return Json(new { success = false, errors });
         }
 
         return View(nameof(Index), model);

@@ -190,3 +190,6 @@ TryOrchardCore.Web/wwwroot/is-cache/*
 TryOrchardCore.Web/Localization/*
 !src/Modules/**/wwwroot
 !src/Themes/**/wwwroot
+## Tailwind CSS output (generated on build by Lombiq.Tailwind.Targets)
+**/wwwroot/css/site.css
+**/obj/tailwind/

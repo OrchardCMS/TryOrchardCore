@@ -1,0 +1,41 @@
+@{
+    // A few things people ask before they try it. `T` is an IHtmlLocalizer, so an answer can carry a
+    // link without escaping.
+    var faqs = new[]
+    {
+        (Question: T["Is it really free?"],
+         Answer: T["Yes, completely. There is no account to create, no card, and no paid tier. You only give an email so we can send you the link."]),
+        (Question: T["Why do you ask for my email?"],
+         Answer: T["Only so we can send you the link to your new site. There is no account to create, no mailing list, and no marketing. <strong class=\"font-semibold text-green-800 dark:text-night-heading-soft\">We never store or sell it.</strong>"]),
+        (Question: T["How long does my site last?"],
+         Answer: T["Demo sites are cleared each week, so treat it as a sandbox. Anything you change is temporary, which means you can experiment without worrying about breaking it."]),
+        (Question: T["Is this the real Orchard Core?"],
+         Answer: T["Yes. It is a full Orchard Core site with the same admin you would run yourself, set up with sample content so there is something to look at from the start."]),
+        (Question: T["What does the starting point change?"],
+         Answer: T["It sets up the site with different sample content and templates, so you can see a few of the things Orchard Core can build. You can change everything once you are in."]),
+        (Question: T["How do I build a real site?"],
+         Answer: T["When you are ready to run your own, the <a href=\"https://docs.orchardcore.net/en/latest/getting-started/\" class=\"font-semibold text-green-700 underline decoration-green-700/30 underline-offset-2 hover:decoration-green-700 dark:text-night-link dark:decoration-night-link/30 dark:hover:decoration-night-link\">get started guide</a> walks you through installing Orchard Core and running it locally."]),
+    };
+}
+
+<section id="faq" class="bg-white dark:bg-night-surface">
+    <div class="mx-auto max-w-content px-6 band">
+        <div class="reveal mx-auto max-w-4xl">
+            <h2 class="text-[clamp(2rem,4.5vw,3.25rem)] leading-[1.1] tracking-tight text-green-900 dark:text-night-heading">@T["Common questions."]</h2>
+            <p class="mt-6 text-lg leading-relaxed text-pretty text-ink-soft dark:text-night-ink-soft">@T["A few things people ask before they try it."]</p>
+        </div>
+
+        <div class="reveal mx-auto mt-12 max-w-4xl space-y-3">
+            @foreach (var (question, answer) in faqs)
+            {
+                <details class="group rounded-xl bg-cream px-6 dark:bg-night-cream">
+                    <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-green-900 [&::-webkit-details-marker]:hidden dark:text-night-heading">
+                        <h3 class="text-base">@question</h3>
+                        <svg class="h-5 w-5 shrink-0 text-green-600 transition-transform duration-300 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                    </summary>
+                    <p class="pb-5 text-ink-soft dark:text-night-ink-soft">@answer</p>
+                </details>
+            }
+        </div>
+    </div>
+</section>

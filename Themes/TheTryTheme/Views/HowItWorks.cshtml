@@ -1,0 +1,29 @@
+@{
+    // Three short steps, so the email step is no surprise.
+    var steps = new[]
+    {
+        (Heading: T["Fill in the short form"], Body: T["Name your site and add your email, then choose a starting point."]),
+        (Heading: T["Open the link we email you"], Body: T["We send a link that sets up your site. It is ready in about a minute."]),
+        (Heading: T["Explore the admin"], Body: T["Sign in and try the dashboard: content, media, themes, and modules."]),
+    };
+}
+
+<section id="how" class="bg-cream dark:bg-night-cream">
+    <div class="mx-auto max-w-content px-6 band">
+        <div class="reveal max-w-3xl">
+            <h2 class="text-[clamp(2rem,4.5vw,3.25rem)] leading-[1.1] tracking-tight text-green-900 dark:text-night-heading">@T["How it works."]</h2>
+            <p class="mt-6 max-w-2xl text-lg leading-relaxed text-pretty text-ink-soft dark:text-night-ink-soft">@T["Three steps, about a minute, and nothing to set up on your machine."]</p>
+        </div>
+        <div class="reveal mt-12 grid gap-8 md:grid-cols-3">
+            @for (var i = 0; i < steps.Length; i++)
+            {
+                <div>
+                    @* Number in a soft round badge, matching the check badge on the Success page. *@
+                    <div class="grid h-12 w-12 place-items-center rounded-full bg-green-100 font-serif text-xl font-semibold text-green-600 dark:bg-night-tint">@(i + 1)</div>
+                    <h3 class="mt-4 text-xl text-green-900 dark:text-night-heading">@steps[i].Heading</h3>
+                    <p class="mt-3 text-ink-soft dark:text-night-ink-soft">@steps[i].Body</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
